@@ -300,16 +300,25 @@ void parseGradeLine(char* line, Prom* promo, Course* allCourses[], int nbCourses
             return;
         }
         c = createCourse(course_name, coeff);
-        s->courses = realloc(s->courses, sizeof(Course*) * (s->num_courses +1));
+        Course** tmp1 = realloc(s->courses, sizeof(Course*) * (s->num_courses +1));
+
+        if (tmp1 == NULL){
+            return;
+        }
+        s->courses = tmp1;
         s->courses[s->num_courses] = c;
         s->num_courses++;
     }
 
-    c->grades->grades_array = realloc(c->grades->grades_array, sizeof(float) * (c->grades->size + 1));
-    if (c->grades->grades_array == NULL){
+
+    float* tmp2 = realloc(c->grades->grades_array, sizeof(float) * (c->grades->size + 1));
+    if (tmp2 == NULL){
         return;
+    
     }
-    c->grades->grades_array[c->grades-> size] = grade;
+
+    c->grades->grades_array = tmp2;
+    c->grades->grades_array[c->grades->size] = grade;
     c->grades->size ++;
 
     float sum = 0;
@@ -414,7 +423,7 @@ void printPromotion(Prom* p) {
 }
 
 
-void saveInBinaryFile(char* filename, Prom* promo){
+void saveInBinaryFile(char* filename, Prom* promo){ // This function store the memory context in a binary file
     FILE* data = fopen(filename, "wb");
     if (data == NULL){
         printf("Allocation Error\n");
@@ -452,7 +461,7 @@ void saveInBinaryFile(char* filename, Prom* promo){
 
 
 
-Prom* loadPromotionFromBinaryFile(char* filename){
+Prom* loadPromotionFromBinaryFile(char* filename){ // This function read the binaryFile to restore the memory context
     FILE* data = fopen(filename, "rb");
     if (data == NULL){
         printf("Allocation error\n");
@@ -680,21 +689,182 @@ Prom* loadPromotionFromBinaryFile(char* filename){
     return promo;
 }
 
+int compareStudents(const void* a, const void* b){ // Generic pointers in parameters to work with the qsort function
+    Student* s1 = *(Student**)a; // Cast to Student** and deference it to obtain a Student*
+    Student* s2 = *(Student**)b;
 
+    if (s1-> general_average < s2->general_average){
+        return 1;
+    }
+    if (s1->general_average > s2->general_average){
+        return -1;
+    }
+    return 0;
+}
+
+
+Student** getTopTenStudents(Prom* promo, int* count){
+    if (promo ==  NULL || promo->num_students <= 0){
+        return NULL;
+    }
+
+    if (promo->num_students <= 10){
+        *count = promo->num_students;
+    }
+    else{
+        *count = 10;
+    }
+
+    Student** copy = malloc(sizeof(Student*) * promo->num_students);
+    if (copy == NULL){
+        return NULL;
+    }
+
+    memcpy(copy, promo->students, sizeof(Student*) * promo->num_students); // Copy the adress of the Students_array to manipulate the pointers' order without altering the original
+    
+    qsort(copy, promo->num_students, sizeof(Student*), compareStudents); // Call the qsort function to sort the array
+
+    Student** top_ten = malloc(sizeof(Student*) * (*count));
+
+    if(top_ten == NULL){
+        free(copy);
+        return NULL;
+    }
+
+    for (int i = 0; i < *count; i++) { 
+        top_ten[i] = copy[i];
+    }
+
+    free(copy);
+    return top_ten;
+}
+
+
+typedef struct {
+    Student* s;
+    float moyenne;
+} StudentCourseAvg;
+
+
+int compareCourseAvg(const void* a, const void* b) {
+    const StudentCourseAvg* sa = (const StudentCourseAvg*)a;
+    const StudentCourseAvg* sb = (const StudentCourseAvg*)b;
+    if (sa->moyenne < sb->moyenne) return 1;
+    if (sa->moyenne > sb->moyenne) return -1;
+    return 0;
+}
+
+
+Student** getTopThreeStudentsCourse(Prom* promo, const char* course_name, int* top_count) {
+    if (promo == NULL || course_name == NULL || promo->num_students == 0) {
+        *top_count = 0;
+        return NULL;
+    }
+
+    // Count how many students are related to the course
+    int count = 0;
+    for (int i = 0; i < promo->num_students; i++) {
+        Student* s = promo->students[i];
+        for (int j = 0; j < s->num_courses; j++) {
+            if (strcmp(s->courses[j]->course_name, course_name) == 0) {
+                count++;
+                break;
+            }
+        }
+    }
+
+    if (count == 0) {
+        *top_count = 0;
+        printf("This course doesn't exist\n");
+        return NULL; // No students found
+    }
+
+    StudentCourseAvg* savg = malloc(sizeof(StudentCourseAvg) * count);
+    if (savg == NULL) {
+        *top_count = 0;
+        return NULL;
+    }
+
+    int idx = 0;
+    for (int i = 0; i < promo->num_students; i++) {
+        Student* s = promo->students[i];
+        for (int j = 0; j < s->num_courses; j++) {
+            Course* c = s->courses[j];
+            if (strcmp(c->course_name, course_name) == 0) {
+                savg[idx].s = s;
+                savg[idx].moyenne = c->average;
+                idx++;
+                break;
+            }
+        }
+    }
+
+    qsort(savg, count, sizeof(StudentCourseAvg), compareCourseAvg);
+
+
+    if (count < 3){
+        *top_count = count;
+    }
+    else{
+        *top_count = 3;
+    }
+
+    Student** top_three = malloc(sizeof(Student*) * (*top_count));
+    if (top_three == NULL) {
+        free(savg);
+        *top_count = 0;
+        return NULL;
+    }
+
+    for (int i = 0; i < *top_count; i++) {
+        top_three[i] = savg[i].s;
+    }
+
+    free(savg);
+    return top_three;
+}
 
 
 int main(int argc, char* argv[]) {
 
     checkArguments(argc);
     Prom* p = loadPromotionFromFile(argv[1]);
-    if (p != NULL){
+    //if (p != NULL){
         // printPromotion(p);
-    }
+    //}
     saveInBinaryFile("test.bin", p);
-    p = loadPromotionFromBinaryFile("test.bin");
+    //Prom* p = loadPromotionFromBinaryFile("test.bin");
     if (p == NULL){
         printf("Error in data loading\n");
     }
+
+    int count = 0;
+    Student** top_ten = getTopTenStudents(p, &count);
     // printPromotion(p);
+
+    printf("--- Top 10 students ---\n");
+    printf("\n");
+    for(int i =0; i < count; i++){
+        printf("%s: ", top_ten[i]->first_name);
+        printf("%f",top_ten[i]->general_average);
+        printf("\n");
+        printf("\n");
+    }
+
+    printf("\n");
+    printf("\n");
+
+    char* course = "Geographie";
+
+    Student** top_three = getTopThreeStudentsCourse(p, course, &count);
+
+    printf("--- Top %d Students in %s ---\n", count, course);
+    printf("\n");
+    for(int i = 0; i < count; i++){
+        printf("%s: ", top_three[i]->first_name);
+        printf("%f",top_three[i]->courses[0]->average);
+        printf("\n");
+        printf("\n");
+    }
     return 0;
 }
