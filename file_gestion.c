@@ -22,12 +22,12 @@
 /**
  * @brief Vérifie la présence du fichier de données en argument.
  */
-void checkArguments(int argc) {
-    argc--;
-    if (argc == 0) {
-        printf("You must add the 'data.txt' file in parameter\n");
-        exit(0);
+int checkArguments(int argc) {
+    if (argc < 2) {
+        fprintf(stderr, "Erreur : aucun fichier de données fourni.\n");
+        return -1;
     }
+    return 0;
 }
 
 /**
@@ -39,7 +39,8 @@ Course* parseCourseLine(char* line) {
     char name[128];
     float coeff;
 
-    if (sscanf(line, "%[^;];%f", name, &coeff) != 2) return NULL;
+    if (sscanf(line, "%[^;];%f", name, &coeff) != 2)
+        return NULL;
 
     return createCourse(name, coeff);
 }
@@ -51,8 +52,7 @@ Student* parseStudentLine(char* line) {
     if (line == NULL) return NULL;
 
     int id, age;
-    char firstname[128];
-    char lastname[128];
+    char firstname[128], lastname[128];
 
     if (sscanf(line, "%d;%[^;];%[^;];%d", &id, firstname, lastname, &age) != 4)
         return NULL;
@@ -62,19 +62,19 @@ Student* parseStudentLine(char* line) {
 
 /**
  * @brief Analyse une ligne de note et met à jour les structures correspondantes.
- *
- * Recherche l’étudiant et le cours concernés, ajoute la note et met à jour les moyennes.
+ * @return 0 si tout est OK, -1 si erreur.
  */
-void parseGradeLine(char* line, Prom* promo, Course* allCourses[], int nbCourses) {
-    if (line == NULL) return;
+int parseGradeLine(char* line, Prom* promo, Course* allCourses[], int nbCourses) {
+    if (line == NULL || promo == NULL || allCourses == NULL)
+        return -1;
 
     int id;
     char course_name[128];
     float grade;
 
-    if (sscanf(line, "%d;%[^;];%f", &id, course_name, &grade) != 3) return;
+    if (sscanf(line, "%d;%[^;];%f", &id, course_name, &grade) != 3)
+        return -1;
 
-    // Recherche de l’étudiant concerné
     Student* s = NULL;
     for (int i = 0; i < promo->num_students; i++) {
         if (promo->students[i]->student_id == id) {
@@ -82,9 +82,8 @@ void parseGradeLine(char* line, Prom* promo, Course* allCourses[], int nbCourses
             break;
         }
     }
-    if (s == NULL) return;
+    if (s == NULL) return -1;
 
-    // Recherche du cours
     Course* c = NULL;
     for (int i = 0; i < s->num_courses; i++) {
         if (strcmp(course_name, s->courses[i]->course_name) == 0) {
@@ -93,7 +92,7 @@ void parseGradeLine(char* line, Prom* promo, Course* allCourses[], int nbCourses
         }
     }
 
-    // Création du cours s’il n’existe pas
+    // Si le cours n’existe pas encore → création
     if (c == NULL) {
         float coeff = 0.0f;
         int found = 0;
@@ -104,24 +103,29 @@ void parseGradeLine(char* line, Prom* promo, Course* allCourses[], int nbCourses
                 break;
             }
         }
-        if (!found) return;
+        if (!found) return -1;
 
         c = createCourse(course_name, coeff);
+        if (c == NULL) return -1;
+
         Course** tmp = realloc(s->courses, sizeof(Course*) * (s->num_courses + 1));
-        if (tmp == NULL) return;
+        if (tmp == NULL) {
+            destroyCourse(c);
+            return -1;
+        }
+
         s->courses = tmp;
-        s->courses[s->num_courses] = c;
-        s->num_courses++;
+        s->courses[s->num_courses++] = c;
     }
 
     // Ajout de la note
     float* tmp2 = realloc(c->grades->grades_array, sizeof(float) * (c->grades->size + 1));
-    if (tmp2 == NULL) return;
-    c->grades->grades_array = tmp2;
-    c->grades->grades_array[c->grades->size] = grade;
-    c->grades->size++;
+    if (tmp2 == NULL) return -1;
 
-    // Mise à jour des moyennes
+    c->grades->grades_array = tmp2;
+    c->grades->grades_array[c->grades->size++] = grade;
+
+    // Calcul des moyennes
     float sum = 0;
     for (int n = 0; n < c->grades->size; n++)
         sum += c->grades->grades_array[n];
@@ -132,69 +136,62 @@ void parseGradeLine(char* line, Prom* promo, Course* allCourses[], int nbCourses
         total += s->courses[i]->average * s->courses[i]->coeff;
         total_coeff += s->courses[i]->coeff;
     }
-    s->general_average = total / total_coeff;
+    if (total_coeff > 0)
+        s->general_average = total / total_coeff;
+
+    return 0;
 }
 
 /**
  * @brief Charge la promotion complète à partir d’un fichier texte.
  */
-
-Prom* loadPromotionFromFile(char* filename){
+Prom* loadPromotionFromFile(char* filename) {
     FILE* data = fopen(filename, "r");
-    if (data == NULL){
-        printf("Cannot read the file\n");
+    if (data == NULL) {
+        fprintf(stderr, "Erreur : impossible d’ouvrir le fichier %s.\n", filename);
         return NULL;
     }
 
     Prom* promo = createProm(200, 0);
+    if (promo == NULL) {
+        fclose(data);
+        fprintf(stderr, "Erreur : allocation échouée pour la promotion.\n");
+        return NULL;
+    }
+
     Course* allCourses[50];
     int nbCourses = 0;
-
     char line[256];
     int mode = 0;
 
     while (fgets(line, sizeof(line), data)) {
-        if (strncmp(line, "ETUDIANTS", 9) == 0){ // Check the wording
-            mode = 1;
-            fgets(line, sizeof(line), data); // Skip the wording line to go to the data
-            continue;
-        }
-        if (strncmp(line, "MATIERES", 8) == 0){ // Check the wording
-            mode = 2;
-            fgets(line, sizeof(line), data); // Skip the wording line to go to the data
-            continue;
-        }
-        if (strncmp(line, "NOTES", 5) == 0){ // Check the wording
-            mode = 3;
-            fgets(line, sizeof(line), data); // Skip the wording line to go to the data
-            continue;
-        }
+        if (strncmp(line, "ETUDIANTS", 9) == 0) { mode = 1; fgets(line, sizeof(line), data); continue; }
+        if (strncmp(line, "MATIERES", 8) == 0) { mode = 2; fgets(line, sizeof(line), data); continue; }
+        if (strncmp(line, "NOTES", 5) == 0) { mode = 3; fgets(line, sizeof(line), data); continue; }
 
-        if (mode == 1){
+        if (mode == 1) {
             Student* s = parseStudentLine(line);
-            if (s){
-                if (promo->num_students >= promo->capacity){
-                    promo->capacity *= 2;
-                    promo->students = realloc(promo->students, sizeof(Student*) * promo->capacity);
-                    if (promo->students == NULL){
-                        return NULL;
-                    }
+            if (!s) continue;
+            if (promo->num_students >= promo->capacity) {
+                promo->capacity *= 2;
+                Student** tmp = realloc(promo->students, sizeof(Student*) * promo->capacity);
+                if (!tmp) {
+                    destroyStudent(s);
+                    fclose(data);
+                    return NULL;
                 }
-                promo->students[promo->num_students] = s;
-                promo->num_students++;
+                promo->students = tmp;
             }
+            promo->students[promo->num_students++] = s;
         }
-
-        else if (mode == 2){
+        else if (mode == 2) {
             Course* c = parseCourseLine(line);
-            if (c){
-                allCourses[nbCourses] = c;
-                nbCourses++;
-            }
+            if (c && nbCourses < 50)
+                allCourses[nbCourses++] = c;
         }
-
-        else if (mode == 3){
-            parseGradeLine(line, promo, allCourses, nbCourses);
+        else if (mode == 3) {
+            if (parseGradeLine(line, promo, allCourses, nbCourses) == -1)
+                fprintf(stderr, "⚠️ Erreur lors du traitement d'une ligne de note.\n");
         }
     }
 
@@ -222,44 +219,90 @@ void printPromotion(Prom* p) {
     }
 }
 
+
 /**
  * @brief Sauvegarde la promotion dans un fichier binaire.
+ * @return 0 si succès, -1 sinon.
  */
-void saveInBinaryFile(char* filename, Prom* promo){ // This function store the memory context in a binary file
-    FILE* data = fopen(filename, "wb");
-    if (data == NULL){
-        printf("Allocation Error\n");
-        return;
+int saveInBinaryFile(char* filename, Prom* promo) {
+    if (filename == NULL || promo == NULL) {
+        fprintf(stderr, "Erreur : arguments invalides.\n");
+        return -1;
     }
 
-    fwrite(&promo->num_students, sizeof(int), 1, data);
-    int len = 0;
-    for(int i = 0; i < promo->num_students; i++){
+    FILE* data = fopen(filename, "wb");
+    if (data == NULL) {
+        fprintf(stderr, "Erreur : impossible d’écrire dans le fichier %s.\n", filename);
+        return -1;
+    }
+
+    if (fwrite(&promo->num_students, sizeof(int), 1, data) != 1) {
+        fprintf(stderr, "Erreur lors de l’écriture du nombre d’étudiants.\n");
+        fclose(data);
+        return -1;
+    }
+
+    for (int i = 0; i < promo->num_students; i++) {
         Student* s = promo->students[i];
-        fwrite(&s->general_average, sizeof(float), 1, data);
-        fwrite(&s->student_id, sizeof(int), 1, data);
-        fwrite(&s->num_courses, sizeof(int), 1, data);
-        fwrite(&s->age, sizeof(int), 1, data);
-        len = (strlen(s->first_name)) + 1; // +1 for the '\0"
-        fwrite(&len, sizeof(int), 1, data); // To save a char* we need to save the length first
-        fwrite(s->first_name, sizeof(char), len, data);
-        len = (strlen(s->last_name)) + 1;
-        fwrite(&len, sizeof(int), 1, data);
-        fwrite(s->last_name, sizeof(char), len, data);
-        for (int j =0; j < s->num_courses; j++){
-            Course* c = s->courses[j];
-            len = (strlen(c->course_name)) + 1;
-            fwrite(&len, sizeof(int), 1, data);
-            fwrite(c->course_name, sizeof(char), len, data);
-            fwrite(&c->coeff, sizeof(float), 1, data);
-            fwrite(&c->average, sizeof(float), 1, data);
-            fwrite(&c->grades->size, sizeof(int), 1, data);
-            fwrite(c->grades->grades_array, sizeof(float), c->grades->size, data); // Save the grades_array
+        if (s == NULL) continue;
+
+        if (fwrite(&s->general_average, sizeof(float), 1, data) != 1 ||
+            fwrite(&s->student_id, sizeof(int), 1, data) != 1 ||
+            fwrite(&s->num_courses, sizeof(int), 1, data) != 1 ||
+            fwrite(&s->age, sizeof(int), 1, data) != 1) {
+            fprintf(stderr, "Erreur lors de l’écriture des infos de l’étudiant %d.\n", s->student_id);
+            fclose(data);
+            return -1;
         }
 
+        int len = strlen(s->first_name) + 1;
+        if (fwrite(&len, sizeof(int), 1, data) != 1 ||
+            fwrite(s->first_name, sizeof(char), len, data) != (size_t)len) {
+            fprintf(stderr, "Erreur lors de l’écriture du prénom de %d.\n", s->student_id);
+            fclose(data);
+            return -1;
+        }
+
+        len = strlen(s->last_name) + 1;
+        if (fwrite(&len, sizeof(int), 1, data) != 1 ||
+            fwrite(s->last_name, sizeof(char), len, data) != (size_t)len) {
+            fprintf(stderr, "Erreur lors de l’écriture du nom de %d.\n", s->student_id);
+            fclose(data);
+            return -1;
+        }
+
+        for (int j = 0; j < s->num_courses; j++) {
+            Course* c = s->courses[j];
+            if (c == NULL) continue;
+
+            len = strlen(c->course_name) + 1;
+            if (fwrite(&len, sizeof(int), 1, data) != 1 ||
+                fwrite(c->course_name, sizeof(char), len, data) != (size_t)len ||
+                fwrite(&c->coeff, sizeof(float), 1, data) != 1 ||
+                fwrite(&c->average, sizeof(float), 1, data) != 1 ||
+                fwrite(&c->grades->size, sizeof(int), 1, data) != 1) {
+                fprintf(stderr, "Erreur lors de l’écriture du cours '%s' de %s.\n",
+                        c->course_name, s->first_name);
+                fclose(data);
+                return -1;
+            }
+
+            if (c->grades->size > 0) {
+                if (fwrite(c->grades->grades_array, sizeof(float), c->grades->size, data)
+                    != (size_t)c->grades->size) {
+                    fprintf(stderr, "Erreur lors de l’écriture des notes du cours '%s'.\n",
+                            c->course_name);
+                    fclose(data);
+                    return -1;
+                }
+            }
+        }
     }
+
     fclose(data);
+    return 0;
 }
+
 
 
 /**
@@ -268,7 +311,6 @@ void saveInBinaryFile(char* filename, Prom* promo){ // This function store the m
 Prom* loadPromotionFromBinaryFile(char* filename){ // This function read the binaryFile to restore the memory context
     FILE* data = fopen(filename, "rb");
     if (data == NULL){
-        printf("Allocation error\n");
         return NULL;
     }
 
@@ -292,7 +334,7 @@ Prom* loadPromotionFromBinaryFile(char* filename){ // This function read the bin
         return NULL;
     }
     
-    int len = 0;
+    size_t len = 0;
     for(int i = 0; i < nb_students; i++){
         Student* s = malloc(sizeof(Student));
         if (s == NULL){
@@ -319,7 +361,7 @@ Prom* loadPromotionFromBinaryFile(char* filename){ // This function read the bin
         }
 
         if (len <= 0 || len > 256){
-            printf("Invalid first_name length: %d\n", len);
+            printf("Invalid first_name length: %ld\n", len);
             free(s);
             fclose(data);
             return NULL;
@@ -349,7 +391,7 @@ Prom* loadPromotionFromBinaryFile(char* filename){ // This function read the bin
             return NULL;
         }
         if (len <= 0 || len > 256){
-            printf("Invalid last_name length: %d\n", len);
+            printf("Invalid last_name length: %ld\n", len);
             free(s->first_name);
             free(s);
             fclose(data);
@@ -412,7 +454,7 @@ Prom* loadPromotionFromBinaryFile(char* filename){ // This function read the bin
                 return NULL;
             }
             if (len <= 0 || len > 256){
-                printf("Invalid course_name length: %d\n", len);
+                printf("Invalid course_name length: %ld\n", len);
                 free(c->grades);
                 free(c);
                 destroyStudent(s);
@@ -473,7 +515,7 @@ Prom* loadPromotionFromBinaryFile(char* filename){ // This function read the bin
                 return NULL;
             }
 
-            if (fread(c->grades->grades_array, sizeof(float), c->grades->size, data) != c->grades->size){
+            if ((int)fread(c->grades->grades_array, sizeof(float), c->grades->size, data) != c->grades->size){
                 printf("Error reading grades array\n");
                 free(c->grades->grades_array);
                 free(c->course_name);
