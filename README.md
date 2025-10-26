@@ -25,6 +25,7 @@ make
 Puis éxecuter le programme avec :
 ```bash
 ./exec data.txt
+```
 ## Documentation
 
 La documentation du projet est générée automatiquement à l’aide de **Doxygen**, un outil permettant de créer une documentation claire et structurée à partir des commentaires dans le code source.
@@ -35,5 +36,6 @@ Pour générer la documentation, il faut d’abord disposer d’un fichier de co
 S’il n’existe pas encore, vous pouvez le créer à l’aide de la commande suivante :
 ```bash
 doxygen -g
+```
 
 
