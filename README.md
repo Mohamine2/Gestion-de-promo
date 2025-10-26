@@ -21,6 +21,7 @@ Les fonctionnalités principales incluent :
 Pour compiler le projet, utiliser la commande :  
 ```bash
 make
+```
 
 Puis éxecuter le programme avec :
 ```bash
