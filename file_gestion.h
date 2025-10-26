@@ -8,7 +8,7 @@
  * - de restaurer cette promotion depuis un fichier binaire ;
  * - d'afficher les informations stockées en mémoire.
  *
- * @author  Mohamed
+ * @author  Mohamed-Amine
  * @date    26 octobre 2025
  * @version 1.0
  */
@@ -21,8 +21,9 @@
 /**
  * @brief Vérifie que le fichier de données est passé en argument au programme.
  * @param argc Nombre d’arguments passés au programme.
+ * @return Code d'erreur
  */
-void checkArguments(int argc);
+int checkArguments(int argc);
 
 /**
  * @brief Analyse une ligne décrivant un cours et crée la structure correspondante.
@@ -48,8 +49,9 @@ Student* parseStudentLine(char* line);
  * @param promo Pointeur vers la promotion en mémoire.
  * @param allCourses Tableau de pointeurs vers les cours disponibles.
  * @param nbCourses Nombre total de cours enregistrés.
+ * @return Code d'erreur
  */
-void parseGradeLine(char* line, Prom* promo, Course* allCourses[], int nbCourses);
+int parseGradeLine(char* line, Prom* promo, Course* allCourses[], int nbCourses);
 
 /**
  * @brief Charge une promotion complète à partir d’un fichier texte.
@@ -82,8 +84,9 @@ void printPromotion(Prom* p);
  *
  * @param filename Nom du fichier binaire de destination.
  * @param promo Pointeur vers la promotion à sauvegarder.
+ * @return Code d'erreur
  */
-void saveInBinaryFile(char* filename, Prom* promo);
+int saveInBinaryFile(char* filename, Prom* promo);
 
 /**
  * @brief Restaure une promotion à partir d’un fichier binaire.
