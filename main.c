@@ -33,6 +33,7 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "./struct.h"
 #include "./file_gestion.h"
@@ -41,19 +42,33 @@
 
 int main(int argc, char* argv[]) {
 
-    checkArguments(argc);
-    Prom* p = loadPromotionFromFile(argv[1]);
-    if (p != NULL){
-        printPromotion(p);
+    if (checkArguments(argc) == -1){
+        return EXIT_FAILURE;
     }
-    saveInBinaryFile("save.bin", p);
+
+    Prom* p = loadPromotionFromFile(argv[1]);
+    if (p == NULL){
+        fprintf(stderr, "Erreur critique de chargement.\n");
+        return EXIT_FAILURE;
+    }
+    if (saveInBinaryFile("save.bin", p) == -1){
+        fprintf(stderr, "Erreur lors de la sauvegarde.\n");
+        return EXIT_FAILURE;
+    }
     p = loadPromotionFromBinaryFile("save.bin");
     if (p == NULL){
-        printf("Error in data loading\n");
+        fprintf(stderr, "Erreur critique de chargement\n");
+        return EXIT_FAILURE;
     }
 
     int count = 0;
     Student** top_ten = getTopTenStudents(p, &count);
+
+    if (top_ten == NULL){
+        fprintf(stderr, "Erreur Allocation Mémoire\n");
+        return EXIT_FAILURE;
+    }
+
     printPromotion(p);
 
     printf("--- Top 10 students ---\n");
@@ -72,6 +87,11 @@ int main(int argc, char* argv[]) {
 
     Student** top_three = getTopThreeStudentsCourse(p, course, &count);
 
+    if (top_three == NULL){
+        fprintf(stderr, "Erreur Allocation Mémoire\n");
+        return EXIT_FAILURE;
+    }
+
     printf("--- Top %d Students in %s ---\n", count, course);
     printf("\n");
     for(int i = 0; i < count; i++){
@@ -80,7 +100,5 @@ int main(int argc, char* argv[]) {
         printf("\n");
         printf("\n");
     }
-    return 0;
-}
     return 0;
 }
