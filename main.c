@@ -43,18 +43,18 @@ int main(int argc, char* argv[]) {
 
     checkArguments(argc);
     Prom* p = loadPromotionFromFile(argv[1]);
-    //if (p != NULL){
-        // printPromotion(p);
-    //}
-    saveInBinaryFile("test.bin", p);
-    //Prom* p = loadPromotionFromBinaryFile("test.bin");
+    if (p != NULL){
+        printPromotion(p);
+    }
+    saveInBinaryFile("save.bin", p);
+    p = loadPromotionFromBinaryFile("save.bin");
     if (p == NULL){
         printf("Error in data loading\n");
     }
 
     int count = 0;
     Student** top_ten = getTopTenStudents(p, &count);
-    // printPromotion(p);
+    printPromotion(p);
 
     printf("--- Top 10 students ---\n");
     printf("\n");
@@ -80,5 +80,7 @@ int main(int argc, char* argv[]) {
         printf("\n");
         printf("\n");
     }
+    return 0;
+}
     return 0;
 }
