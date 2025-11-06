@@ -306,7 +306,7 @@ CLASS_DATA* API_load_students(char* filePath) {
  * @brief Sauvegarde la promotion dans un fichier binaire.
  * @return 0 si succès, -1 sinon.
  */
-int saveInBinaryFile(CLASS_DATA* pClass, char* filePath) {
+int API_save_from_binary_file(CLASS_DATA* pClass, char* filePath) {
     if (filePath == NULL || pClass == NULL) {
         fprintf(stderr, "Erreur : arguments invalides.\n");
         return 0;
@@ -355,7 +355,9 @@ int saveInBinaryFile(CLASS_DATA* pClass, char* filePath) {
 
         for (int j = 0; j < s->num_courses; j++) {
             Course* c = s->courses[j];
-            if (c == NULL) continue;
+            if (c == NULL){
+                continue;
+            }
 
             len = strlen(c->course_name) + 1;
             if (fwrite(&len, sizeof(int), 1, data) != 1 ||
@@ -381,4 +383,250 @@ int saveInBinaryFile(CLASS_DATA* pClass, char* filePath) {
 
     fclose(data);
     return 1;
+}
+
+
+
+/**
+ * @brief Charge une promotion depuis un fichier binaire.
+ */
+CLASS_DATA* API_restore_from_binary_file(char* filePath){ // This function read the binaryFile to restore the memory context
+    FILE* data = fopen(filePath, "rb");
+    if (data == NULL){
+        return NULL;
+    }
+
+    int nb_students;
+    if (fread(&nb_students, sizeof(int), 1, data) != 1){
+        fprintf(stderr, "Cannot read the number of students\n");
+        fclose(data);
+        return NULL;
+    }
+
+    if (nb_students < 0){
+        fprintf(stderr, "Invalid number of students\n");
+        fclose(data);
+        return NULL;
+    }
+
+    CLASS_DATA* promo = malloc(sizeof(CLASS_DATA));
+    if (promo == NULL){
+        return NULL;
+    }
+
+    promo->num_students = nb_students;
+    promo->capacity = nb_students;
+    promo->students = NULL;
+
+    promo->students = calloc(promo->capacity, sizeof(Student*));
+    if (promo->students == NULL) {
+        free(promo);
+        return NULL;
+    }
+
+    if (promo == NULL) {
+        fclose(data);
+        fprintf(stderr, "Erreur : allocation échouée pour la promotion.\n");
+        return NULL;
+    }
+    
+    size_t len = 0;
+    for(int i = 0; i < nb_students; i++){
+        Student* s = malloc(sizeof(Student));
+        if (s == NULL){
+            fprintf(stderr, "Cannot allocate student\n");
+            fclose(data);
+            return NULL;
+        }
+
+        if (fread(&s->general_average, sizeof(float), 1, data) != 1 ||
+            fread(&s->student_id, sizeof(int), 1, data) != 1 ||
+            fread(&s->num_courses, sizeof(int), 1, data) != 1 ||
+            fread(&s->age, sizeof(int), 1, data) != 1) {
+            fprintf(stderr, "Error reading student basic data\n");
+            free(s);
+            fclose(data);
+            return NULL;
+        }
+        
+        if (fread(&len, sizeof(int), 1, data) != 1){
+            fprintf(stderr, "Error reading first_name length\n");
+            free(s);
+            fclose(data);
+            return NULL;
+        }
+
+        if (len <= 0 || len > 256){
+            fprintf(stderr, "Invalid first_name length: %ld\n", len);
+            free(s);
+            fclose(data);
+            return NULL;
+        }
+
+        s->first_name = malloc(sizeof(char) * len);
+        if (s->first_name == NULL){
+            free(s);
+            fclose(data);
+            return NULL;
+        }
+
+        if (fread(s->first_name, sizeof(char), len, data) != len){
+            fprintf(stderr, "Error reading first_name\n");
+            free(s->first_name);
+            free(s);
+            fclose(data);
+            return NULL;
+        }
+        
+
+        if (fread(&len, sizeof(int), 1, data) != 1){
+            fprintf(stderr, "Error reading last_name length\n");
+            free(s->first_name);
+            free(s);
+            fclose(data);
+            return NULL;
+        }
+        if (len <= 0 || len > 256){
+            fprintf(stderr, "Invalid last_name length: %ld\n", len);
+            free(s->first_name);
+            free(s);
+            fclose(data);
+            return NULL;
+        }
+        s->last_name = malloc(len);
+        if (s->last_name == NULL){
+            free(s->first_name);
+            free(s);
+            fclose(data);
+            return NULL;
+        }
+        if (fread(s->last_name, sizeof(char), len, data) != len){
+            fprintf(stderr, "Error reading last_name\n");
+            free(s->first_name);
+            free(s->last_name);
+            free(s);
+            fclose(data);
+            return NULL;
+        }
+
+        promo->students[i] = s;
+
+        s->courses = malloc(sizeof(Course*) * s->num_courses);
+        if (s->courses == NULL && s->num_courses > 0){
+            fprintf(stderr, "Cannot allocate courses array\n");
+            free(s->first_name);
+            free(s->last_name);
+            free(s);
+            fclose(data);
+            return NULL;
+        }
+
+        for(int j = 0; j < s->num_courses; j++){
+            Course* c = malloc(sizeof(Course));
+
+            if (c == NULL){
+                fprintf(stderr, "Cannot allocate course\n");
+                //destroyStudent(s);
+                fclose(data);
+                return NULL;
+            }
+
+            c->grades = malloc(sizeof(Grades));
+
+            if (c->grades == NULL){
+                fprintf(stderr, "Cannot allocate grades\n");
+                free(c);
+                // destroyStudent(s);
+                fclose(data);
+                return NULL;
+            }
+
+            if (fread(&len, sizeof(int), 1, data) != 1){
+                fprintf(stderr, "Error reading course_name length\n");
+                free(c->grades);
+                free(c);
+                // destroyStudent(s);
+                fclose(data);
+                return NULL;
+            }
+            if (len <= 0 || len > 256){
+                fprintf(stderr, "Invalid course_name length: %ld\n", len);
+                free(c->grades);
+                free(c);
+                //destroyStudent(s);
+                fclose(data);
+                return NULL;
+            }
+            
+            c->course_name = malloc(sizeof(char) * len);
+
+            if (c->course_name == NULL){
+                free(c->grades);
+                free(c);
+                // destroyStudent(s);
+                fclose(data);
+                return NULL;
+            }
+            if (fread(c->course_name, sizeof(char), len, data) != len){
+                fprintf(stderr, "Error reading course_name\n");
+                free(c->course_name);
+                free(c->grades);
+                free(c);
+                // destroyStudent(s);
+                fclose(data);
+                return NULL;
+            }
+
+
+            if (fread(&c->coeff, sizeof(float), 1, data) != 1 ||
+                fread(&c->average, sizeof(float), 1, data) != 1 ||
+                fread(&c->grades->size, sizeof(int), 1, data) != 1){
+                fprintf(stderr, "Error reading course data\n");
+                free(c->course_name);
+                free(c->grades);
+                free(c);
+                // destroyStudent(s);
+                fclose(data);
+                return NULL;
+            }
+            
+            if (c->grades->size < 0){
+                fprintf(stderr, "Invalid grades size: %d\n", c->grades->size);
+                free(c->course_name);
+                free(c->grades);
+                free(c);
+                // destroyStudent(s);
+                fclose(data);
+                return NULL;
+            }
+
+            c->grades->grades_array = malloc(sizeof(float)  * c->grades->size);
+
+            if (c->grades->grades_array == NULL && c->grades->size > 0){
+                free(c->course_name);
+                free(c->grades);
+                free(c);
+                // destroyStudent(s);
+                fclose(data);
+                return NULL;
+            }
+
+            if ((int)fread(c->grades->grades_array, sizeof(float), c->grades->size, data) != c->grades->size){
+                fprintf(stderr, "Error reading grades array\n");
+                free(c->grades->grades_array);
+                free(c->course_name);
+                free(c->grades);
+                free(c);
+                // destroyStudent(s);
+                fclose(data);
+                return NULL;
+            }
+
+            s->courses[j] = c;
+        }
+    }
+
+    fclose(data);
+
+    return promo;
 }
