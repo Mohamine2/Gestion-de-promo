@@ -1,0 +1,139 @@
+\doxysection{file\+\_\+sorting.\+h File Reference}
+\hypertarget{file__sorting_8h}{}\label{file__sorting_8h}\index{file\_sorting.h@{file\_sorting.h}}
+
+
+Fonctions de tri et de sélection des meilleurs étudiants d’une promotion.  
+
+
+{\ttfamily \#include "{}./struct.\+h"{}}\newline
+Include dependency graph for file\+\_\+sorting.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=160pt]{file__sorting_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=160pt]{file__sorting_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{file__sorting_8h_a8044548996faf1f57689ad6d17e1fd52}{compare\+Students}} (const void \texorpdfstring{$\ast$}{*}a, const void \texorpdfstring{$\ast$}{*}b)
+\begin{DoxyCompactList}\small\item\em Fonction de comparaison utilisée pour trier les étudiants selon leur moyenne générale. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structStudent}{Student}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{file__sorting_8h_a3baf929190e3a5e781e400456307c244}{get\+Top\+Ten\+Students}} (\mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*}promo, int \texorpdfstring{$\ast$}{*}count)
+\begin{DoxyCompactList}\small\item\em Retourne les 10 meilleurs étudiants d’une promotion, triés par moyenne générale décroissante. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structStudent}{Student}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{file__sorting_8h_aeb49f53e715832744def1bc6f33f91b3}{get\+Top\+Three\+Students\+Course}} (\mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*}promo, const char \texorpdfstring{$\ast$}{*}course\+\_\+name, int \texorpdfstring{$\ast$}{*}top\+\_\+count)
+\begin{DoxyCompactList}\small\item\em Retourne les 3 meilleurs étudiants d’un cours donné. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Fonctions de tri et de sélection des meilleurs étudiants d’une promotion. 
+
+Ce module regroupe les fonctions permettant de \+:
+\begin{DoxyItemize}
+\item Trier les étudiants d’une promotion selon leur moyenne générale.
+\item Obtenir les 10 meilleurs étudiants de la promotion.
+\item Obtenir les 3 meilleurs étudiants d’un cours donné.
+\end{DoxyItemize}
+
+Il repose sur la bibliothèque standard C (qsort, memcpy) et les structures définies dans {\ttfamily \doxylink{struct_8h}{struct.\+h}}.
+
+\begin{DoxyAuthor}{Author}
+Mohamed 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+26 octobre 2025 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{file__sorting_8h_a8044548996faf1f57689ad6d17e1fd52}\label{file__sorting_8h_a8044548996faf1f57689ad6d17e1fd52} 
+\index{file\_sorting.h@{file\_sorting.h}!compareStudents@{compareStudents}}
+\index{compareStudents@{compareStudents}!file\_sorting.h@{file\_sorting.h}}
+\doxysubsubsection{\texorpdfstring{compareStudents()}{compareStudents()}}
+{\footnotesize\ttfamily int compare\+Students (\begin{DoxyParamCaption}\item[{const void \texorpdfstring{$\ast$}{*}}]{a,  }\item[{const void \texorpdfstring{$\ast$}{*}}]{b }\end{DoxyParamCaption})}
+
+
+
+Fonction de comparaison utilisée pour trier les étudiants selon leur moyenne générale. 
+
+Cette fonction est utilisée avec {\ttfamily qsort()}. ~\newline
+ Elle compare deux pointeurs vers des structures {\ttfamily \doxylink{structStudent}{Student}} et renvoie \+:
+\begin{DoxyItemize}
+\item 1 si la moyenne du premier est inférieure à celle du second ;
+\item -\/1 si elle est supérieure ;
+\item 0 si elles sont égales.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & Pointeur vers un pointeur de {\ttfamily \doxylink{structStudent}{Student}} (const void\texorpdfstring{$\ast$}{*} requis par qsort). \\
+\hline
+{\em b} & Pointeur vers un pointeur de {\ttfamily \doxylink{structStudent}{Student}} (const void\texorpdfstring{$\ast$}{*} requis par qsort). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Un entier indiquant l’ordre de tri.
+\end{DoxyReturn}
+Fonction de comparaison utilisée pour trier les étudiants selon leur moyenne générale. \Hypertarget{file__sorting_8h_a3baf929190e3a5e781e400456307c244}\label{file__sorting_8h_a3baf929190e3a5e781e400456307c244} 
+\index{file\_sorting.h@{file\_sorting.h}!getTopTenStudents@{getTopTenStudents}}
+\index{getTopTenStudents@{getTopTenStudents}!file\_sorting.h@{file\_sorting.h}}
+\doxysubsubsection{\texorpdfstring{getTopTenStudents()}{getTopTenStudents()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structStudent}{Student}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*} get\+Top\+Ten\+Students (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*}}]{promo,  }\item[{int \texorpdfstring{$\ast$}{*}}]{count }\end{DoxyParamCaption})}
+
+
+
+Retourne les 10 meilleurs étudiants d’une promotion, triés par moyenne générale décroissante. 
+
+Si la promotion contient moins de 10 étudiants, tous sont retournés. ~\newline
+ La fonction alloue dynamiquement un tableau de pointeurs vers les étudiants triés.
+
+
+\begin{DoxyParams}{Parameters}
+{\em promo} & Pointeur vers la structure {\ttfamily \doxylink{structProm}{Prom}} représentant la promotion. \\
+\hline
+{\em count} & Pointeur vers un entier où sera stocké le nombre d’étudiants retournés. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Un tableau dynamique de pointeurs vers les étudiants triés, ou NULL en cas d’erreur.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Le tableau retourné doit être libéré avec {\ttfamily free()} par l’appelant.
+\end{DoxyNote}
+Retourne les 10 meilleurs étudiants d’une promotion, triés par moyenne générale décroissante. \Hypertarget{file__sorting_8h_aeb49f53e715832744def1bc6f33f91b3}\label{file__sorting_8h_aeb49f53e715832744def1bc6f33f91b3} 
+\index{file\_sorting.h@{file\_sorting.h}!getTopThreeStudentsCourse@{getTopThreeStudentsCourse}}
+\index{getTopThreeStudentsCourse@{getTopThreeStudentsCourse}!file\_sorting.h@{file\_sorting.h}}
+\doxysubsubsection{\texorpdfstring{getTopThreeStudentsCourse()}{getTopThreeStudentsCourse()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structStudent}{Student}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*} get\+Top\+Three\+Students\+Course (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*}}]{promo,  }\item[{const char \texorpdfstring{$\ast$}{*}}]{course\+\_\+name,  }\item[{int \texorpdfstring{$\ast$}{*}}]{top\+\_\+count }\end{DoxyParamCaption})}
+
+
+
+Retourne les 3 meilleurs étudiants d’un cours donné. 
+
+La fonction recherche les étudiants inscrits au cours spécifié, trie leurs moyennes pour ce cours dans l’ordre décroissant, puis renvoie les 3 meilleurs (ou moins s’il y en a moins de 3).
+
+
+\begin{DoxyParams}{Parameters}
+{\em promo} & Pointeur vers la promotion complète. \\
+\hline
+{\em course\+\_\+name} & Nom du cours concerné. \\
+\hline
+{\em top\+\_\+count} & Pointeur vers un entier où sera stocké le nombre d’étudiants trouvés (≤ 3). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Un tableau dynamique de pointeurs vers les meilleurs étudiants du cours, ou NULL si aucun n’est trouvé.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Le tableau retourné doit être libéré avec {\ttfamily free()} par l’appelant.
+\end{DoxyNote}
+Retourne les 3 meilleurs étudiants d’un cours donné. 

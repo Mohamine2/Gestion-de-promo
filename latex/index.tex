@@ -1,0 +1,23 @@
+\chapter{Gestion de Promotion Étudiante}
+\hypertarget{index}{}\label{index}\index{Gestion de Promotion Étudiante@{Gestion de Promotion Étudiante}}
+\hypertarget{index_intro_sec}{}\doxysection{\texorpdfstring{Introduction}{Introduction}}\label{index_intro_sec}
+Ce projet en langage C a pour objectif de gérer une promotion d’étudiants \+: chargement des données depuis un fichier texte, calcul des moyennes, sauvegarde en binaire, et tri des meilleurs étudiants.\hypertarget{index_modules_sec}{}\doxysection{\texorpdfstring{Structure du projet}{Structure du projet}}\label{index_modules_sec}
+
+\begin{DoxyItemize}
+\item {\bfseries{\doxylink{struct_8h}{struct.\+h} / \doxylink{struct__functions_8c}{struct\+\_\+functions.\+c}}} \+: définition et gestion des structures principales ({\ttfamily \doxylink{structStudent}{Student}}, {\ttfamily \doxylink{structCourse}{Course}}, {\ttfamily \doxylink{structProm}{Prom}}, etc.)
+\item {\bfseries{\doxylink{file__gestion_8c}{file\+\_\+gestion.\+c}}} \+: lecture et écriture des fichiers (texte et binaire)
+\item {\bfseries{\doxylink{file__sorting_8c}{file\+\_\+sorting.\+c}}} \+: fonctions de tri et de classement des étudiants
+\item {\bfseries{\doxylink{main_8c}{main.\+c}}} \+: fonction principale, lancement du programme
+\end{DoxyItemize}\hypertarget{index_usage_sec}{}\doxysection{\texorpdfstring{Compilation et exécution}{Compilation et exécution}}\label{index_usage_sec}
+Utiliser la commande \+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{make}
+
+\end{DoxyCode}
+ Puis exécuter le programme avec \+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./exec\ data.txt}
+
+\end{DoxyCode}
+\hypertarget{index_doxy_sec}{}\doxysection{\texorpdfstring{Documentation}{Documentation}}\label{index_doxy_sec}
+Cette documentation a été générée automatiquement avec {\bfseries{Doxygen}}. 

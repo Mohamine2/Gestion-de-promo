@@ -1,0 +1,28 @@
+\doxysection{file\+\_\+gestion.\+h}
+\hypertarget{file__gestion_8h_source}{}\label{file__gestion_8h_source}\mbox{\hyperlink{file__gestion_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#ifndef\ FILE\_GESTION\_H}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ FILE\_GESTION\_H}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{struct_8h}{./struct.h}}"{}}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00026\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{file__gestion_8h_a59a04c01ba3b28c814cb9dd22584960e}{checkArguments}}(\textcolor{keywordtype}{int}\ argc);}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00033\ \mbox{\hyperlink{structCourse}{Course}}*\ \mbox{\hyperlink{file__gestion_8h_a91118566b2cc1736b623e9ef7d493a5c}{parseCourseLine}}(\textcolor{keywordtype}{char}*\ line);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00040\ \mbox{\hyperlink{structStudent}{Student}}*\ \mbox{\hyperlink{file__gestion_8h_a12d4f43ff59ba8899b1bbc9e8aa7797c}{parseStudentLine}}(\textcolor{keywordtype}{char}*\ line);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00054\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{file__gestion_8h_acf1f56a8129bfedab1ddde12e12cbd0f}{parseGradeLine}}(\textcolor{keywordtype}{char}*\ line,\ \mbox{\hyperlink{structProm}{Prom}}*\ promo,\ \mbox{\hyperlink{structCourse}{Course}}*\ allCourses[],\ \textcolor{keywordtype}{int}\ nbCourses);}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00067\ \mbox{\hyperlink{structProm}{Prom}}*\ \mbox{\hyperlink{file__gestion_8h_a044e5cb008b4083cde041ae8b38acc9e}{loadPromotionFromFile}}(\textcolor{keywordtype}{char}*\ filename);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00077\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{file__gestion_8h_a5abd5332d1d89fbbd421ad470b8158d3}{printPromotion}}(\mbox{\hyperlink{structProm}{Prom}}*\ p);}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00089\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{file__gestion_8h_a1ef278f608d4699eee7ef8f5feb1abbf}{saveInBinaryFile}}(\textcolor{keywordtype}{char}*\ filename,\ \mbox{\hyperlink{structProm}{Prom}}*\ promo);}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00100\ \mbox{\hyperlink{structProm}{Prom}}*\ \mbox{\hyperlink{file__gestion_8h_aee19bb5b05d8616023d0c15075a6406f}{loadPromotionFromBinaryFile}}(\textcolor{keywordtype}{char}*\ filename);}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ FILE\_GESTION\_H}}
+
+\end{DoxyCode}

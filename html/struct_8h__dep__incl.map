@@ -1,0 +1,23 @@
+<map id="struct.h" name="struct.h">
+<area shape="rect" id="Node000001" title="Définitions des structures de données principales utilisées dans la gestion des étudiants,..." alt="" coords="289,5,359,31"/>
+<area shape="rect" id="Node000002" href="$file__gestion_8c.html" title="Implémentation des fonctions de gestion de fichiers pour la promotion d’étudiants." alt="" coords="163,152,272,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="290,40,266,58,245,80,235,98,228,118,221,152,216,151,223,117,230,96,241,77,262,54,287,36"/>
+<area shape="rect" id="Node000003" href="$file__gestion_8h.html" title="Fonctions de gestion de fichiers pour le chargement, la sauvegarde et l&#39;affichage d&#39;une promotion d&#39;é..." alt="" coords="69,79,179,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="280,38,158,81,156,76,278,33"/>
+<area shape="rect" id="Node000004" href="$file__sorting_8c.html" title="Implémentation des fonctions permettant de trier et sélectionner les meilleurs étudiants d’une promot..." alt="" coords="5,152,112,177"/>
+<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="275,26,215,32,150,43,93,59,72,69,58,80,50,97,49,116,57,151,51,152,44,116,45,96,54,77,69,65,91,54,149,38,215,27,275,20"/>
+<area shape="rect" id="Node000005" href="$main_8c.html" title=" " alt="" coords="367,152,433,177"/>
+<area shape="poly" id="edge9_Node000001_Node000005" title=" " alt="" coords="373,23,469,43,511,58,538,77,545,93,542,108,532,120,516,131,476,148,434,159,433,154,474,143,514,126,528,116,538,105,540,94,534,80,509,63,467,49,372,29"/>
+<area shape="rect" id="Node000006" href="$file__sorting_8h.html" title="Fonctions de tri et de sélection des meilleurs étudiants d’une promotion." alt="" coords="417,79,524,104"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="361,34,448,76,446,81,358,39"/>
+<area shape="rect" id="Node000007" href="$struct__functions_8c.html" title="Implémentation des fonctions de gestion mémoire pour les structures de données." alt="" coords="599,79,737,104"/>
+<area shape="poly" id="edge10_Node000001_Node000007" title=" " alt="" coords="373,27,613,76,612,81,372,32"/>
+<area shape="rect" id="Node000008" href="$struct__functions_8h.html" title="Fonctions de création et de destruction pour les structures du projet." alt="" coords="255,79,393,104"/>
+<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="327,44,327,79,321,79,321,44"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="151,110,204,150,200,154,148,114"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="106,116,71,154,67,150,102,113"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="182,105,367,152,366,157,181,110"/>
+<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="451,116,413,154,410,150,447,112"/>
+<area shape="poly" id="edge12_Node000008_Node000002" title=" " alt="" coords="297,114,236,154,233,150,294,109"/>
+<area shape="poly" id="edge13_Node000008_Node000005" title=" " alt="" coords="348,111,389,150,386,154,344,115"/>
+</map>

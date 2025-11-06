@@ -1,0 +1,9 @@
+<map id="file_gestion.h" name="file_gestion.h">
+<area shape="rect" id="Node000001" title="Fonctions de gestion de fichiers pour le chargement, la sauvegarde et l&#39;affichage d&#39;une promotion d&#39;é..." alt="" coords="137,5,247,31"/>
+<area shape="rect" id="Node000002" href="$file__gestion_8c.html" title="Implémentation des fonctions de gestion de fichiers pour la promotion d’étudiants." alt="" coords="5,79,115,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,39,83,81,80,76,158,35"/>
+<area shape="rect" id="Node000003" href="$file__sorting_8c.html" title="Implémentation des fonctions permettant de trier et sélectionner les meilleurs étudiants d’une promot..." alt="" coords="139,79,245,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="195,44,195,79,189,79,189,44"/>
+<area shape="rect" id="Node000004" href="$main_8c.html" title=" " alt="" coords="269,79,336,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="223,36,286,76,283,81,220,40"/>
+</map>

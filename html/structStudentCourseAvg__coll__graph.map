@@ -1,0 +1,9 @@
+<map id="StudentCourseAvg" name="StudentCourseAvg">
+<area shape="rect" id="Node000001" title="Structure interne associant un étudiant à sa moyenne dans un cours donné." alt="" coords="5,269,148,295"/>
+<area shape="rect" id="Node000002" href="$structStudent.html" title="Représente un étudiant et ses informations personnelles ainsi que ses cours suivis." alt="" coords="41,181,113,207"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,221,79,269,74,269,74,221"/>
+<area shape="rect" id="Node000003" href="$structCourse.html" title="Représente un cours avec son nom, son coefficient et ses notes." alt="" coords="43,93,110,119"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="79,133,79,181,74,181,74,133"/>
+<area shape="rect" id="Node000004" href="$structGrades.html" title="Représente les notes d’un cours." alt="" coords="43,5,111,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="79,45,79,93,74,93,74,45"/>
+</map>

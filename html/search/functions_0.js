@@ -1,0 +1,10 @@
+var searchData=
+[
+  ['checkarguments_0',['checkarguments',['../file__gestion_8c.html#a59a04c01ba3b28c814cb9dd22584960e',1,'checkArguments(int argc):&#160;file_gestion.c'],['../file__gestion_8h.html#a59a04c01ba3b28c814cb9dd22584960e',1,'checkArguments(int argc):&#160;file_gestion.c']]],
+  ['comparecourseavg_1',['compareCourseAvg',['../file__sorting_8c.html#af0df33c6882826b6dd4c2eaa6392b25c',1,'file_sorting.c']]],
+  ['comparestudents_2',['comparestudents',['../file__sorting_8c.html#a8044548996faf1f57689ad6d17e1fd52',1,'compareStudents(const void *a, const void *b):&#160;file_sorting.c'],['../file__sorting_8h.html#a8044548996faf1f57689ad6d17e1fd52',1,'compareStudents(const void *a, const void *b):&#160;file_sorting.c']]],
+  ['createcourse_3',['createcourse',['../struct__functions_8c.html#a414ef79ddf92a3a7c19871da2a255cd8',1,'createCourse(char *name, float coeff):&#160;struct_functions.c'],['../struct__functions_8h.html#a414ef79ddf92a3a7c19871da2a255cd8',1,'createCourse(char *name, float coeff):&#160;struct_functions.c']]],
+  ['creategrade_4',['creategrade',['../struct__functions_8c.html#aab109e7d2eaf0316a9ee55313db86970',1,'createGrade(int size):&#160;struct_functions.c'],['../struct__functions_8h.html#aab109e7d2eaf0316a9ee55313db86970',1,'createGrade(int size):&#160;struct_functions.c']]],
+  ['createprom_5',['createprom',['../struct__functions_8c.html#acc6d778192fba07f1c4cc9f22a0222bc',1,'createProm(int initial_capacity, int nb_students):&#160;struct_functions.c'],['../struct__functions_8h.html#acc6d778192fba07f1c4cc9f22a0222bc',1,'createProm(int initial_capacity, int nb_students):&#160;struct_functions.c']]],
+  ['createstudent_6',['createstudent',['../struct__functions_8c.html#a62a8341f9b55a4ba7981ea0d0159647d',1,'createStudent(int id, char *first_name, char *last_name, int age, int num_courses):&#160;struct_functions.c'],['../struct__functions_8h.html#a62a8341f9b55a4ba7981ea0d0159647d',1,'createStudent(int id, char *first_name, char *last_name, int age, int num_courses):&#160;struct_functions.c']]]
+];

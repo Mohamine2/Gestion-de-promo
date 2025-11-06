@@ -1,0 +1,38 @@
+\doxysection{struct.\+h}
+\hypertarget{struct_8h_source}{}\label{struct_8h_source}\mbox{\hyperlink{struct_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#ifndef\ STRUCT\_H}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#define\ STRUCT\_H}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structGrades}{Grades}}\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{float}*\ \mbox{\hyperlink{structGrades_a131529aa147ccebd564873b4ab6fb4bc}{grades\_array}};\ \ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structGrades_ab2a51c4262a9527f0a312d2a9492e991}{size}};\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00029\ \}\ \mbox{\hyperlink{structGrades}{Grades}};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structCourse}{Course}}\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \mbox{\hyperlink{structGrades}{Grades}}*\ \mbox{\hyperlink{structCourse_a47e2bbc6cfab9e7d26fa017a3d88f939}{grades}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{structCourse_ae824192d27ad72349b34dbd5fff59834}{course\_name}};\ \ \ \ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{structCourse_a0f7113d3a5bd8a25860cacb6c56bc255}{coeff}};\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{structCourse_a00f8b662052aa1d4517002e9e79ec4a1}{average}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00040\ \}\ \mbox{\hyperlink{structCourse}{Course}};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structStudent}{Student}}\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \mbox{\hyperlink{structCourse}{Course}}**\ \mbox{\hyperlink{structStudent_a98177266610def136b22b18fdac99795}{courses}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{structStudent_a1d4c27ced09cb42559fe80e26788d166}{first\_name}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{structStudent_a72516079a9c710bb5c599dfc05853fe2}{last\_name}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{structStudent_aa0b39cbc255a3dd809624c032a2dda4c}{general\_average}};\ \ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structStudent_aa15852da382c8a87ec49fa1ca12803a5}{student\_id}};\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structStudent_aa5a51f00430bd2e1d4ac1d32736c142a}{num\_courses}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structStudent_a552a431a43ffc545d180424597d51f97}{age}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00054\ \}\ \mbox{\hyperlink{structStudent}{Student}};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00060\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structProm}{Prom}}\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \mbox{\hyperlink{structStudent}{Student}}**\ \mbox{\hyperlink{structProm_ada94a04e961ceccd2686efe95d8cf276}{students}};\ \ \ \ \ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structProm_a6d3f8b7234523d3c6a73d72ec2c94d74}{num\_students}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structProm_a9d429e1b00e7ab9cc8d1ef4891a8ec58}{capacity}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00064\ \}\ \mbox{\hyperlink{structProm}{Prom}};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ STRUCT\_H}}
+
+\end{DoxyCode}

@@ -288,10 +288,8 @@ int saveInBinaryFile(char* filename, Prom* promo) {
             }
 
             if (c->grades->size > 0) {
-                if (fwrite(c->grades->grades_array, sizeof(float), c->grades->size, data)
-                    != (size_t)c->grades->size) {
-                    fprintf(stderr, "Erreur lors de l’écriture des notes du cours '%s'.\n",
-                            c->course_name);
+                if (fwrite(c->grades->grades_array, sizeof(float), c->grades->size, data) != (size_t)c->grades->size) {
+                    fprintf(stderr, "Erreur lors de l’écriture des notes du cours '%s'.\n", c->course_name);
                     fclose(data);
                     return -1;
                 }

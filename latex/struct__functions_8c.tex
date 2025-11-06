@@ -1,0 +1,152 @@
+\doxysection{struct\+\_\+functions.\+c File Reference}
+\hypertarget{struct__functions_8c}{}\label{struct__functions_8c}\index{struct\_functions.c@{struct\_functions.c}}
+
+
+Implémentation des fonctions de gestion mémoire pour les structures de données.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include "{}./struct.\+h"{}}\newline
+Include dependency graph for struct\+\_\+functions.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{struct__functions_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structGrades}{Grades}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct__functions_8c_aab109e7d2eaf0316a9ee55313db86970}{create\+Grade}} (int size)
+\begin{DoxyCompactList}\small\item\em Crée une structure {\ttfamily \doxylink{structGrades}{Grades}} et initialise son tableau de notes. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct__functions_8c_a8825a8b993b71e809eae52fcd18a4fac}{destroy\+Grade}} (\mbox{\hyperlink{structGrades}{Grades}} \texorpdfstring{$\ast$}{*}g)
+\begin{DoxyCompactList}\small\item\em Libère la mémoire associée à une structure {\ttfamily \doxylink{structGrades}{Grades}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structCourse}{Course}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct__functions_8c_a414ef79ddf92a3a7c19871da2a255cd8}{create\+Course}} (char \texorpdfstring{$\ast$}{*}name, float coeff)
+\begin{DoxyCompactList}\small\item\em Crée une structure {\ttfamily \doxylink{structCourse}{Course}} avec un nom, un coefficient et un tableau de notes vide. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct__functions_8c_ab328824c86ab8b1dbf46a7e99582dfe2}{destroy\+Course}} (\mbox{\hyperlink{structCourse}{Course}} \texorpdfstring{$\ast$}{*}c)
+\begin{DoxyCompactList}\small\item\em Libère la mémoire associée à un cours. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structStudent}{Student}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct__functions_8c_a62a8341f9b55a4ba7981ea0d0159647d}{create\+Student}} (int id, char \texorpdfstring{$\ast$}{*}first\+\_\+name, char \texorpdfstring{$\ast$}{*}last\+\_\+name, int age, int num\+\_\+courses)
+\begin{DoxyCompactList}\small\item\em Crée un étudiant avec ses informations personnelles et initialise ses cours. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct__functions_8c_a54f210e25e612496aa1d404e8be1539d}{destroy\+Student}} (\mbox{\hyperlink{structStudent}{Student}} \texorpdfstring{$\ast$}{*}s)
+\begin{DoxyCompactList}\small\item\em Libère la mémoire associée à un étudiant et à ses cours. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct__functions_8c_acc6d778192fba07f1c4cc9f22a0222bc}{create\+Prom}} (int initial\+\_\+capacity, int nb\+\_\+students)
+\begin{DoxyCompactList}\small\item\em Crée une structure {\ttfamily \doxylink{structProm}{Prom}} représentant une promotion. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct__functions_8c_adb4677085575bc2d16449fa5ad954e73}{destroy\+Prom}} (\mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*}p)
+\begin{DoxyCompactList}\small\item\em Libère la mémoire associée à une promotion et à tous ses étudiants. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implémentation des fonctions de gestion mémoire pour les structures de données. 
+
+Ce fichier contient les fonctions permettant \+:
+\begin{DoxyItemize}
+\item la création et la suppression de notes ({\ttfamily \doxylink{structGrades}{Grades}}),
+\item la création et la suppression de cours ({\ttfamily \doxylink{structCourse}{Course}}),
+\item la création et la suppression d’étudiants ({\ttfamily \doxylink{structStudent}{Student}}),
+\item la création et la suppression de promotions ({\ttfamily \doxylink{structProm}{Prom}}).
+\end{DoxyItemize}
+
+Ces fonctions assurent une gestion sûre de la mémoire dynamique et facilitent la manipulation des structures dans le reste du programme. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{struct__functions_8c_a414ef79ddf92a3a7c19871da2a255cd8}\label{struct__functions_8c_a414ef79ddf92a3a7c19871da2a255cd8} 
+\index{struct\_functions.c@{struct\_functions.c}!createCourse@{createCourse}}
+\index{createCourse@{createCourse}!struct\_functions.c@{struct\_functions.c}}
+\doxysubsubsection{\texorpdfstring{createCourse()}{createCourse()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCourse}{Course}} \texorpdfstring{$\ast$}{*} create\+Course (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{name,  }\item[{float}]{coeff }\end{DoxyParamCaption})}
+
+
+
+Crée une structure {\ttfamily \doxylink{structCourse}{Course}} avec un nom, un coefficient et un tableau de notes vide. 
+
+Crée une structure {\ttfamily \doxylink{structCourse}{Course}} et initialise son nom, coefficient et tableau de notes. \Hypertarget{struct__functions_8c_aab109e7d2eaf0316a9ee55313db86970}\label{struct__functions_8c_aab109e7d2eaf0316a9ee55313db86970} 
+\index{struct\_functions.c@{struct\_functions.c}!createGrade@{createGrade}}
+\index{createGrade@{createGrade}!struct\_functions.c@{struct\_functions.c}}
+\doxysubsubsection{\texorpdfstring{createGrade()}{createGrade()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structGrades}{Grades}} \texorpdfstring{$\ast$}{*} create\+Grade (\begin{DoxyParamCaption}\item[{int}]{size }\end{DoxyParamCaption})}
+
+
+
+Crée une structure {\ttfamily \doxylink{structGrades}{Grades}} et initialise son tableau de notes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & Nombre initial de notes à allouer (0 pour un tableau vide). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointeur vers la structure allouée, ou NULL en cas d’échec. 
+\end{DoxyReturn}
+\Hypertarget{struct__functions_8c_acc6d778192fba07f1c4cc9f22a0222bc}\label{struct__functions_8c_acc6d778192fba07f1c4cc9f22a0222bc} 
+\index{struct\_functions.c@{struct\_functions.c}!createProm@{createProm}}
+\index{createProm@{createProm}!struct\_functions.c@{struct\_functions.c}}
+\doxysubsubsection{\texorpdfstring{createProm()}{createProm()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*} create\+Prom (\begin{DoxyParamCaption}\item[{int}]{initial\+\_\+capacity,  }\item[{int}]{nb\+\_\+students }\end{DoxyParamCaption})}
+
+
+
+Crée une structure {\ttfamily \doxylink{structProm}{Prom}} représentant une promotion. 
+
+Crée une structure {\ttfamily \doxylink{structProm}{Prom}} représentant une promotion d’étudiants. \Hypertarget{struct__functions_8c_a62a8341f9b55a4ba7981ea0d0159647d}\label{struct__functions_8c_a62a8341f9b55a4ba7981ea0d0159647d} 
+\index{struct\_functions.c@{struct\_functions.c}!createStudent@{createStudent}}
+\index{createStudent@{createStudent}!struct\_functions.c@{struct\_functions.c}}
+\doxysubsubsection{\texorpdfstring{createStudent()}{createStudent()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structStudent}{Student}} \texorpdfstring{$\ast$}{*} create\+Student (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{char \texorpdfstring{$\ast$}{*}}]{first\+\_\+name,  }\item[{char \texorpdfstring{$\ast$}{*}}]{last\+\_\+name,  }\item[{int}]{age,  }\item[{int}]{num\+\_\+courses }\end{DoxyParamCaption})}
+
+
+
+Crée un étudiant avec ses informations personnelles et initialise ses cours. 
+
+Crée une structure {\ttfamily \doxylink{structStudent}{Student}} avec ses informations personnelles et ses cours. \Hypertarget{struct__functions_8c_ab328824c86ab8b1dbf46a7e99582dfe2}\label{struct__functions_8c_ab328824c86ab8b1dbf46a7e99582dfe2} 
+\index{struct\_functions.c@{struct\_functions.c}!destroyCourse@{destroyCourse}}
+\index{destroyCourse@{destroyCourse}!struct\_functions.c@{struct\_functions.c}}
+\doxysubsubsection{\texorpdfstring{destroyCourse()}{destroyCourse()}}
+{\footnotesize\ttfamily void destroy\+Course (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCourse}{Course}} \texorpdfstring{$\ast$}{*}}]{c }\end{DoxyParamCaption})}
+
+
+
+Libère la mémoire associée à un cours. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & Pointeur vers le cours à détruire. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{struct__functions_8c_a8825a8b993b71e809eae52fcd18a4fac}\label{struct__functions_8c_a8825a8b993b71e809eae52fcd18a4fac} 
+\index{struct\_functions.c@{struct\_functions.c}!destroyGrade@{destroyGrade}}
+\index{destroyGrade@{destroyGrade}!struct\_functions.c@{struct\_functions.c}}
+\doxysubsubsection{\texorpdfstring{destroyGrade()}{destroyGrade()}}
+{\footnotesize\ttfamily void destroy\+Grade (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGrades}{Grades}} \texorpdfstring{$\ast$}{*}}]{g }\end{DoxyParamCaption})}
+
+
+
+Libère la mémoire associée à une structure {\ttfamily \doxylink{structGrades}{Grades}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & Pointeur vers la structure à détruire. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{struct__functions_8c_adb4677085575bc2d16449fa5ad954e73}\label{struct__functions_8c_adb4677085575bc2d16449fa5ad954e73} 
+\index{struct\_functions.c@{struct\_functions.c}!destroyProm@{destroyProm}}
+\index{destroyProm@{destroyProm}!struct\_functions.c@{struct\_functions.c}}
+\doxysubsubsection{\texorpdfstring{destroyProm()}{destroyProm()}}
+{\footnotesize\ttfamily void destroy\+Prom (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*}}]{p }\end{DoxyParamCaption})}
+
+
+
+Libère la mémoire associée à une promotion et à tous ses étudiants. 
+
+Libère toute la mémoire associée à une promotion (étudiants, tableau, structure). \Hypertarget{struct__functions_8c_a54f210e25e612496aa1d404e8be1539d}\label{struct__functions_8c_a54f210e25e612496aa1d404e8be1539d} 
+\index{struct\_functions.c@{struct\_functions.c}!destroyStudent@{destroyStudent}}
+\index{destroyStudent@{destroyStudent}!struct\_functions.c@{struct\_functions.c}}
+\doxysubsubsection{\texorpdfstring{destroyStudent()}{destroyStudent()}}
+{\footnotesize\ttfamily void destroy\+Student (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structStudent}{Student}} \texorpdfstring{$\ast$}{*}}]{s }\end{DoxyParamCaption})}
+
+
+
+Libère la mémoire associée à un étudiant et à ses cours. 
+
+Libère toute la mémoire associée à un étudiant (cours, chaînes, structure). 

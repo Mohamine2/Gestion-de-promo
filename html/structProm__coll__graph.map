@@ -1,0 +1,9 @@
+<map id="Prom" name="Prom">
+<area shape="rect" id="Node000001" title="Représente une promotion d’étudiants." alt="" coords="13,269,69,295"/>
+<area shape="rect" id="Node000002" href="$structStudent.html" title="Représente un étudiant et ses informations personnelles ainsi que ses cours suivis." alt="" coords="5,181,77,207"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="44,221,44,269,39,269,39,221"/>
+<area shape="rect" id="Node000003" href="$structCourse.html" title="Représente un cours avec son nom, son coefficient et ses notes." alt="" coords="8,93,75,119"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="44,133,44,181,39,181,39,133"/>
+<area shape="rect" id="Node000004" href="$structGrades.html" title="Représente les notes d’un cours." alt="" coords="7,5,75,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="44,45,44,93,39,93,39,45"/>
+</map>

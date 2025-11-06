@@ -1,5 +1,5 @@
 /**
- * @file top_students.c
+ * @file file_sorting.c
  * @brief Implémentation des fonctions permettant de trier et sélectionner les meilleurs étudiants d’une promotion.
  *
  * Ce fichier contient l’implémentation des algorithmes utilisés pour :
@@ -9,7 +9,7 @@
  * Ces fonctions s’appuient sur le tri rapide de la bibliothèque standard (`qsort`)
  * et utilisent des copies de tableaux pour ne pas modifier l’ordre d’origine des étudiants.
  *
- * @see top_students.h
+ * @see file_sorting.h
  */
 
 #include <stdio.h>
@@ -39,7 +39,12 @@ Student** getTopTenStudents(Prom* promo, int* count) {
     if (promo == NULL || promo->num_students <= 0)
         return NULL;
 
-    *count = (promo->num_students < 10) ? promo->num_students : 10;
+    if (promo->num_students < 10) {
+        *count = promo->num_students;
+    }
+    else {
+        *count = 10;
+    }
 
     Student** copy = malloc(sizeof(Student*) * promo->num_students);
     if (copy == NULL)
@@ -91,7 +96,7 @@ Student** getTopThreeStudentsCourse(Prom* promo, const char* course_name, int* t
         return NULL;
     }
 
-    // Étape 1 : compter les étudiants concernés
+    // Compter les étudiants concernés
     int count = 0;
     for (int i = 0; i < promo->num_students; i++) {
         Student* s = promo->students[i];
@@ -109,7 +114,7 @@ Student** getTopThreeStudentsCourse(Prom* promo, const char* course_name, int* t
         return NULL;
     }
 
-    // Étape 2 : stocker les moyennes de chaque étudiant dans la matière
+    // Stocker les moyennes de chaque étudiant dans la matière
     StudentCourseAvg* savg = malloc(sizeof(StudentCourseAvg) * count);
     if (savg == NULL) {
         *top_count = 0;
@@ -134,7 +139,13 @@ Student** getTopThreeStudentsCourse(Prom* promo, const char* course_name, int* t
     qsort(savg, count, sizeof(StudentCourseAvg), compareCourseAvg);
 
     // Étape 4 : sélectionner les 3 meilleurs (ou moins)
-    *top_count = (count < 3) ? count : 3;
+    if (count < 3) {
+        *top_count = count;
+    }
+    else {
+        *top_count = 3;
+    }
+
     Student** top_three = malloc(sizeof(Student*) * (*top_count));
     if (top_three == NULL) {
         free(savg);

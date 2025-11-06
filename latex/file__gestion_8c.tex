@@ -1,0 +1,153 @@
+\doxysection{file\+\_\+gestion.\+c File Reference}
+\hypertarget{file__gestion_8c}{}\label{file__gestion_8c}\index{file\_gestion.c@{file\_gestion.c}}
+
+
+Implémentation des fonctions de gestion de fichiers pour la promotion d’étudiants.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include "{}./struct.\+h"{}}\newline
+{\ttfamily \#include "{}./struct\+\_\+functions.\+h"{}}\newline
+{\ttfamily \#include "{}./file\+\_\+gestion.\+h"{}}\newline
+Include dependency graph for file\+\_\+gestion.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{file__gestion_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{file__gestion_8c_a59a04c01ba3b28c814cb9dd22584960e}{check\+Arguments}} (int argc)
+\begin{DoxyCompactList}\small\item\em Vérifie la présence du fichier de données en argument. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structCourse}{Course}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{file__gestion_8c_a91118566b2cc1736b623e9ef7d493a5c}{parse\+Course\+Line}} (char \texorpdfstring{$\ast$}{*}line)
+\begin{DoxyCompactList}\small\item\em Analyse une ligne contenant les informations d’un cours. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structStudent}{Student}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{file__gestion_8c_a12d4f43ff59ba8899b1bbc9e8aa7797c}{parse\+Student\+Line}} (char \texorpdfstring{$\ast$}{*}line)
+\begin{DoxyCompactList}\small\item\em Analyse une ligne contenant les informations d’un étudiant. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{file__gestion_8c_acf1f56a8129bfedab1ddde12e12cbd0f}{parse\+Grade\+Line}} (char \texorpdfstring{$\ast$}{*}line, \mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*}promo, \mbox{\hyperlink{structCourse}{Course}} \texorpdfstring{$\ast$}{*}all\+Courses\mbox{[}$\,$\mbox{]}, int nb\+Courses)
+\begin{DoxyCompactList}\small\item\em Analyse une ligne de note et met à jour les structures correspondantes. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{file__gestion_8c_a044e5cb008b4083cde041ae8b38acc9e}{load\+Promotion\+From\+File}} (char \texorpdfstring{$\ast$}{*}filename)
+\begin{DoxyCompactList}\small\item\em Charge la promotion complète à partir d’un fichier texte. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{file__gestion_8c_a5abd5332d1d89fbbd421ad470b8158d3}{print\+Promotion}} (\mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*}p)
+\begin{DoxyCompactList}\small\item\em Affiche toutes les informations de la promotion. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{file__gestion_8c_a1ef278f608d4699eee7ef8f5feb1abbf}{save\+In\+Binary\+File}} (char \texorpdfstring{$\ast$}{*}filename, \mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*}promo)
+\begin{DoxyCompactList}\small\item\em Sauvegarde la promotion dans un fichier binaire. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{file__gestion_8c_aee19bb5b05d8616023d0c15075a6406f}{load\+Promotion\+From\+Binary\+File}} (char \texorpdfstring{$\ast$}{*}filename)
+\begin{DoxyCompactList}\small\item\em Charge une promotion depuis un fichier binaire. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implémentation des fonctions de gestion de fichiers pour la promotion d’étudiants. 
+
+Ce fichier contient toutes les fonctions nécessaires pour \+:
+\begin{DoxyItemize}
+\item lire un fichier texte de données et charger une promotion en mémoire ;
+\item sauvegarder et restaurer cette promotion au format binaire ;
+\item afficher les informations stockées en mémoire (étudiants, cours, notes, moyennes).
+\end{DoxyItemize}
+
+\begin{DoxyAuthor}{Author}
+Mohamed-\/\+Amine 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+26 octobre 2025 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{file__gestion_8c_a59a04c01ba3b28c814cb9dd22584960e}\label{file__gestion_8c_a59a04c01ba3b28c814cb9dd22584960e} 
+\index{file\_gestion.c@{file\_gestion.c}!checkArguments@{checkArguments}}
+\index{checkArguments@{checkArguments}!file\_gestion.c@{file\_gestion.c}}
+\doxysubsubsection{\texorpdfstring{checkArguments()}{checkArguments()}}
+{\footnotesize\ttfamily int check\+Arguments (\begin{DoxyParamCaption}\item[{int}]{argc }\end{DoxyParamCaption})}
+
+
+
+Vérifie la présence du fichier de données en argument. 
+
+Vérifie que le fichier de données est passé en argument au programme. \Hypertarget{file__gestion_8c_aee19bb5b05d8616023d0c15075a6406f}\label{file__gestion_8c_aee19bb5b05d8616023d0c15075a6406f} 
+\index{file\_gestion.c@{file\_gestion.c}!loadPromotionFromBinaryFile@{loadPromotionFromBinaryFile}}
+\index{loadPromotionFromBinaryFile@{loadPromotionFromBinaryFile}!file\_gestion.c@{file\_gestion.c}}
+\doxysubsubsection{\texorpdfstring{loadPromotionFromBinaryFile()}{loadPromotionFromBinaryFile()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*} load\+Promotion\+From\+Binary\+File (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{filename }\end{DoxyParamCaption})}
+
+
+
+Charge une promotion depuis un fichier binaire. 
+
+Restaure une promotion à partir d’un fichier binaire. \Hypertarget{file__gestion_8c_a044e5cb008b4083cde041ae8b38acc9e}\label{file__gestion_8c_a044e5cb008b4083cde041ae8b38acc9e} 
+\index{file\_gestion.c@{file\_gestion.c}!loadPromotionFromFile@{loadPromotionFromFile}}
+\index{loadPromotionFromFile@{loadPromotionFromFile}!file\_gestion.c@{file\_gestion.c}}
+\doxysubsubsection{\texorpdfstring{loadPromotionFromFile()}{loadPromotionFromFile()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*} load\+Promotion\+From\+File (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{filename }\end{DoxyParamCaption})}
+
+
+
+Charge la promotion complète à partir d’un fichier texte. 
+
+Charge une promotion complète à partir d’un fichier texte. \Hypertarget{file__gestion_8c_a91118566b2cc1736b623e9ef7d493a5c}\label{file__gestion_8c_a91118566b2cc1736b623e9ef7d493a5c} 
+\index{file\_gestion.c@{file\_gestion.c}!parseCourseLine@{parseCourseLine}}
+\index{parseCourseLine@{parseCourseLine}!file\_gestion.c@{file\_gestion.c}}
+\doxysubsubsection{\texorpdfstring{parseCourseLine()}{parseCourseLine()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCourse}{Course}} \texorpdfstring{$\ast$}{*} parse\+Course\+Line (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{line }\end{DoxyParamCaption})}
+
+
+
+Analyse une ligne contenant les informations d’un cours. 
+
+Analyse une ligne décrivant un cours et crée la structure correspondante. \Hypertarget{file__gestion_8c_acf1f56a8129bfedab1ddde12e12cbd0f}\label{file__gestion_8c_acf1f56a8129bfedab1ddde12e12cbd0f} 
+\index{file\_gestion.c@{file\_gestion.c}!parseGradeLine@{parseGradeLine}}
+\index{parseGradeLine@{parseGradeLine}!file\_gestion.c@{file\_gestion.c}}
+\doxysubsubsection{\texorpdfstring{parseGradeLine()}{parseGradeLine()}}
+{\footnotesize\ttfamily int parse\+Grade\+Line (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{line,  }\item[{\mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*}}]{promo,  }\item[{\mbox{\hyperlink{structCourse}{Course}} \texorpdfstring{$\ast$}{*}}]{all\+Courses\mbox{[}$\,$\mbox{]},  }\item[{int}]{nb\+Courses }\end{DoxyParamCaption})}
+
+
+
+Analyse une ligne de note et met à jour les structures correspondantes. 
+
+Analyse une ligne décrivant une note et met à jour les structures correspondantes.
+
+\begin{DoxyReturn}{Returns}
+0 si tout est OK, -\/1 si erreur. 
+\end{DoxyReturn}
+\Hypertarget{file__gestion_8c_a12d4f43ff59ba8899b1bbc9e8aa7797c}\label{file__gestion_8c_a12d4f43ff59ba8899b1bbc9e8aa7797c} 
+\index{file\_gestion.c@{file\_gestion.c}!parseStudentLine@{parseStudentLine}}
+\index{parseStudentLine@{parseStudentLine}!file\_gestion.c@{file\_gestion.c}}
+\doxysubsubsection{\texorpdfstring{parseStudentLine()}{parseStudentLine()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structStudent}{Student}} \texorpdfstring{$\ast$}{*} parse\+Student\+Line (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{line }\end{DoxyParamCaption})}
+
+
+
+Analyse une ligne contenant les informations d’un étudiant. 
+
+Analyse une ligne décrivant un étudiant et crée la structure correspondante. \Hypertarget{file__gestion_8c_a5abd5332d1d89fbbd421ad470b8158d3}\label{file__gestion_8c_a5abd5332d1d89fbbd421ad470b8158d3} 
+\index{file\_gestion.c@{file\_gestion.c}!printPromotion@{printPromotion}}
+\index{printPromotion@{printPromotion}!file\_gestion.c@{file\_gestion.c}}
+\doxysubsubsection{\texorpdfstring{printPromotion()}{printPromotion()}}
+{\footnotesize\ttfamily void print\+Promotion (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*}}]{p }\end{DoxyParamCaption})}
+
+
+
+Affiche toutes les informations de la promotion. 
+
+Affiche les informations d\textquotesingle{}une promotion. \Hypertarget{file__gestion_8c_a1ef278f608d4699eee7ef8f5feb1abbf}\label{file__gestion_8c_a1ef278f608d4699eee7ef8f5feb1abbf} 
+\index{file\_gestion.c@{file\_gestion.c}!saveInBinaryFile@{saveInBinaryFile}}
+\index{saveInBinaryFile@{saveInBinaryFile}!file\_gestion.c@{file\_gestion.c}}
+\doxysubsubsection{\texorpdfstring{saveInBinaryFile()}{saveInBinaryFile()}}
+{\footnotesize\ttfamily int save\+In\+Binary\+File (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{filename,  }\item[{\mbox{\hyperlink{structProm}{Prom}} \texorpdfstring{$\ast$}{*}}]{promo }\end{DoxyParamCaption})}
+
+
+
+Sauvegarde la promotion dans un fichier binaire. 
+
+Sauvegarde la promotion en mémoire dans un fichier binaire.
+
+\begin{DoxyReturn}{Returns}
+0 si succès, -\/1 sinon. 
+\end{DoxyReturn}

@@ -1,0 +1,51 @@
+\chapter{Gestion de Promotion Étudiante}
+\hypertarget{md_README}{}\label{md_README}\index{Gestion de Promotion Étudiante@{Gestion de Promotion Étudiante}}
+\label{md_README_autotoc_md0}%
+\Hypertarget{md_README_autotoc_md0}%
+ \hypertarget{md_README_autotoc_md1}{}\doxysection{\texorpdfstring{Introduction}{Introduction}}\label{md_README_autotoc_md1}
+Ce projet en langage C a pour objectif de gérer une promotion d’étudiants. ~\newline
+ Les fonctionnalités principales incluent \+: ~\newline
+
+\begin{DoxyItemize}
+\item Chargement des données depuis un fichier texte ~\newline
+
+\item Calcul des moyennes des étudiants ~\newline
+
+\item Sauvegarde des données en binaire ~\newline
+
+\item Tri et classement des meilleurs étudiants ~\newline
+
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md2}{}\doxysection{\texorpdfstring{Structure du projet}{Structure du projet}}\label{md_README_autotoc_md2}
+
+\begin{DoxyItemize}
+\item {\bfseries{\doxylink{struct_8h}{struct.\+h} / \doxylink{struct__functions_8c}{struct\+\_\+functions.\+c}}} \+: définition et gestion des structures principales ({\ttfamily \doxylink{structStudent}{Student}}, {\ttfamily \doxylink{structCourse}{Course}}, {\ttfamily \doxylink{structProm}{Prom}}, etc.) ~\newline
+
+\item {\bfseries{\doxylink{file__gestion_8c}{file\+\_\+gestion.\+c}}} \+: lecture et écriture des fichiers (texte et binaire) ~\newline
+
+\item {\bfseries{\doxylink{file__sorting_8c}{file\+\_\+sorting.\+c}}} \+: fonctions de tri et de classement des étudiants ~\newline
+
+\item {\bfseries{\doxylink{main_8c}{main.\+c}}} \+: fonction principale, lancement du programme ~\newline
+
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md3}{}\doxysection{\texorpdfstring{Compilation et exécution}{Compilation et exécution}}\label{md_README_autotoc_md3}
+Pour compiler le projet, utiliser la commande \+: ~\newline
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{make}
+
+\end{DoxyCode}
+
+
+Puis éxecuter le programme avec \+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./exec\ data.txt}
+
+\end{DoxyCode}
+ \hypertarget{md_README_autotoc_md4}{}\doxysection{\texorpdfstring{Documentation}{Documentation}}\label{md_README_autotoc_md4}
+La documentation du projet est générée automatiquement à l’aide de {\bfseries{Doxygen}}, un outil permettant de créer une documentation claire et structurée à partir des commentaires dans le code source.\hypertarget{md_README_autotoc_md5}{}\doxysubsection{\texorpdfstring{Génération de la documentation}{Génération de la documentation}}\label{md_README_autotoc_md5}
+Pour générer la documentation, il faut d’abord disposer d’un fichier de configuration {\ttfamily Doxyfile}. ~\newline
+ S’il n’existe pas encore, vous pouvez le créer à l’aide de la commande suivante \+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{doxygen\ -\/g}
+
+\end{DoxyCode}
+ 
