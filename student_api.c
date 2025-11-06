@@ -52,14 +52,28 @@ typedef struct CLASS_DATA {
 /**
  * @brief Charge la promotion complète à partir d’un fichier texte.
  */
-CLASS_DATA* API_load_students(char* filename) {
-    FILE* data = fopen(filename, "r");
+CLASS_DATA* API_load_students(char* filePath) {
+    FILE* data = fopen(filePath, "r");
     if (data == NULL) {
-        fprintf(stderr, "Erreur : impossible d'ouvrir le fichier %s.\n", filename);
+        fprintf(stderr, "Erreur : impossible d'ouvrir le fichier %s.\n", filePath);
         return NULL;
     }
 
-    CLASS_DATA* promo = createProm(200, 0);
+    CLASS_DATA* promo = malloc(sizeof(CLASS_DATA));
+    if (promo == NULL){
+        return NULL;
+    }
+
+    promo->num_students = 0;
+    promo->capacity = 200;
+    promo->students = NULL;
+
+    promo->students = calloc(promo->capacity, sizeof(Student*));
+    if (promo->students == NULL) {
+        free(promo);
+        return NULL;
+    }
+
     if (promo == NULL) {
         fclose(data);
         fprintf(stderr, "Erreur : allocation échouée pour la promotion.\n");
@@ -81,18 +95,51 @@ CLASS_DATA* API_load_students(char* filename) {
                 continue;
             }
             int id, age;
-            char firstname[128], lastname[128];
+            char first_name[128], last_name[128];
 
-            if (sscanf(line, "%d;%[^;];%[^;];%d", &id, firstname, lastname, &age) != 4){
+            if (sscanf(line, "%d;%[^;];%[^;];%d", &id, first_name, last_name, &age) != 4){
                 continue;
             }
 
-            Student* s = createStudent(id, firstname, lastname, age, 0);
+            Student* s = malloc(sizeof(Student));
+            if (s == NULL)
+                return NULL;
+
+            s->first_name = malloc(strlen(first_name) + 1);
+            if (s->first_name == NULL) {
+                free(s);
+                return NULL;
+            }
+            strcpy(s->first_name, first_name);
+
+            s->last_name = malloc(strlen(last_name) + 1);
+            if (s->last_name == NULL) {
+                free(s->first_name);
+                free(s);
+                return NULL;
+            }
+            strcpy(s->last_name, last_name);
+
+            s->student_id = id;
+            s->age = age;
+            s->num_courses = nbCourses;
+            s->general_average = 0.0f;
+            s->courses = NULL;
+
+            if (nbCourses > 0) {
+                s->courses = calloc(nbCourses, sizeof(Course*));
+                if (s->courses == NULL) {
+                    free(s->first_name);
+                    free(s->last_name);
+                    free(s);
+                    return NULL;
+                }
+            }
+
             if (promo->num_students >= promo->capacity) {
                 promo->capacity *= 2;
                 Student** tmp = realloc(promo->students, sizeof(Student*) * promo->capacity);
-                if (!tmp) {
-                    destroyStudent(s);
+                if (tmp == NULL) {
                     fclose(data);
                     return NULL;
                 }
@@ -114,10 +161,33 @@ CLASS_DATA* API_load_students(char* filename) {
                 continue;
             }
 
-            Course* c = createCourse(name, coeff);
+            Course* c = malloc(sizeof(Course));
+            if (c == NULL) {
+                return NULL;
+            }
 
-            if (c && nbCourses < 50)
+            c->course_name = malloc(strlen(name) + 1);
+            if (c->course_name == NULL) {
+                free(c);
+                return NULL;
+            }
+            strcpy(c->course_name, name);
+
+            c->coeff = coeff;
+
+            c->grades = malloc(sizeof(Grades));
+            if (c->grades == NULL) {
+                return NULL;
+            }
+
+            c->grades->size = 0;
+            c->grades->grades_array = NULL;
+
+            c->average = 0.0f;
+
+            if (c != NULL && nbCourses < 50){
                 allCourses[nbCourses++] = c;
+            }
         }
         else if (mode == 3) {
 
@@ -167,14 +237,33 @@ CLASS_DATA* API_load_students(char* filename) {
                     return NULL;
                 }
 
-                c = createCourse(course_name, coeff);
-                if (c == NULL){
-                    return NULL;
+                Course* c = malloc(sizeof(Course));
+                if (c == NULL) {
+                    exit(1);
                 }
+
+                c->course_name = malloc(strlen(course_name) + 1);
+                if (c->course_name == NULL) {
+                    free(c);
+                    exit(1);
+                }
+                strcpy(c->course_name, course_name);
+
+                c->coeff = coeff;
+
+                c->grades = malloc(sizeof(Grades));
+                    if (c->grades == NULL) {
+                        return NULL;
+                }
+
+                c->grades->size = 0;
+                c->grades->grades_array = NULL;
+                
+                c->average = 0.0f;
+
 
                 Course** tmp = realloc(s->courses, sizeof(Course*) * (s->num_courses + 1));
                 if (tmp == NULL) {
-                    destroyCourse(c);
                     return NULL;
                 }
 
@@ -210,4 +299,86 @@ CLASS_DATA* API_load_students(char* filename) {
 
     fclose(data);
     return promo;
+}
+
+
+/**
+ * @brief Sauvegarde la promotion dans un fichier binaire.
+ * @return 0 si succès, -1 sinon.
+ */
+int saveInBinaryFile(CLASS_DATA* pClass, char* filePath) {
+    if (filePath == NULL || pClass == NULL) {
+        fprintf(stderr, "Erreur : arguments invalides.\n");
+        return 0;
+    }
+
+    FILE* data = fopen(filePath, "wb");
+    if (data == NULL) {
+        fprintf(stderr, "Erreur : impossible d’écrire dans le fichier %s.\n", filePath);
+        return 0;
+    }
+
+    if (fwrite(&pClass->num_students, sizeof(int), 1, data) != 1) {
+        fprintf(stderr, "Erreur lors de l’écriture du nombre d’étudiants.\n");
+        fclose(data);
+        return 0;
+    }
+
+    for (int i = 0; i < pClass->num_students; i++) {
+        Student* s = pClass->students[i];
+        if (s == NULL) continue;
+
+        if (fwrite(&s->general_average, sizeof(float), 1, data) != 1 ||
+            fwrite(&s->student_id, sizeof(int), 1, data) != 1 ||
+            fwrite(&s->num_courses, sizeof(int), 1, data) != 1 ||
+            fwrite(&s->age, sizeof(int), 1, data) != 1) {
+            fprintf(stderr, "Erreur lors de l’écriture des infos de l’étudiant %d.\n", s->student_id);
+            fclose(data);
+            return 0;
+        }
+
+        int len = strlen(s->first_name) + 1;
+        if (fwrite(&len, sizeof(int), 1, data) != 1 ||
+            fwrite(s->first_name, sizeof(char), len, data) != (size_t)len) {
+            fprintf(stderr, "Erreur lors de l’écriture du prénom de %d.\n", s->student_id);
+            fclose(data);
+            return 0;
+        }
+
+        len = strlen(s->last_name) + 1;
+        if (fwrite(&len, sizeof(int), 1, data) != 1 ||
+            fwrite(s->last_name, sizeof(char), len, data) != (size_t)len) {
+            fprintf(stderr, "Erreur lors de l’écriture du nom de %d.\n", s->student_id);
+            fclose(data);
+            return 0;
+        }
+
+        for (int j = 0; j < s->num_courses; j++) {
+            Course* c = s->courses[j];
+            if (c == NULL) continue;
+
+            len = strlen(c->course_name) + 1;
+            if (fwrite(&len, sizeof(int), 1, data) != 1 ||
+                fwrite(c->course_name, sizeof(char), len, data) != (size_t)len ||
+                fwrite(&c->coeff, sizeof(float), 1, data) != 1 ||
+                fwrite(&c->average, sizeof(float), 1, data) != 1 ||
+                fwrite(&c->grades->size, sizeof(int), 1, data) != 1) {
+                fprintf(stderr, "Erreur lors de l’écriture du cours '%s' de %s.\n",
+                        c->course_name, s->first_name);
+                fclose(data);
+                return 0;
+            }
+
+            if (c->grades->size > 0) {
+                if (fwrite(c->grades->grades_array, sizeof(float), c->grades->size, data) != (size_t)c->grades->size) {
+                    fprintf(stderr, "Erreur lors de l’écriture des notes du cours '%s'.\n", c->course_name);
+                    fclose(data);
+                    return 0;
+                }
+            }
+        }
+    }
+
+    fclose(data);
+    return 1;
 }
