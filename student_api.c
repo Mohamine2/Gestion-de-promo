@@ -91,9 +91,6 @@ CLASS_DATA* API_load_students(char* filePath) {
         if (strncmp(line, "NOTES", 5) == 0) { mode = 3; fgets(line, sizeof(line), data); continue; }
 
         if (mode == 1) {
-            if (line == NULL){
-                continue;
-            }
             int id, age;
             char first_name[128], last_name[128];
 
@@ -140,6 +137,7 @@ CLASS_DATA* API_load_students(char* filePath) {
                 promo->capacity *= 2;
                 Student** tmp = realloc(promo->students, sizeof(Student*) * promo->capacity);
                 if (tmp == NULL) {
+                    // destroyStudent(s);
                     fclose(data);
                     return NULL;
                 }
@@ -150,9 +148,6 @@ CLASS_DATA* API_load_students(char* filePath) {
         }
         else if (mode == 2) {
 
-            if (line == NULL){
-                continue;
-            }
 
             char name[128];
             float coeff;
@@ -186,14 +181,12 @@ CLASS_DATA* API_load_students(char* filePath) {
             c->average = 0.0f;
 
             if (c != NULL && nbCourses < 50){
-                allCourses[nbCourses++] = c;
+                allCourses[nbCourses] = c;
+                nbCourses++;
             }
         }
         else if (mode == 3) {
 
-            if (line == NULL){
-                continue;
-            }
 
             int id;
             char course_name[128];
@@ -237,15 +230,15 @@ CLASS_DATA* API_load_students(char* filePath) {
                     return NULL;
                 }
 
-                Course* c = malloc(sizeof(Course));
+                c = malloc(sizeof(Course));
                 if (c == NULL) {
-                    exit(1);
+                    return NULL;
                 }
 
                 c->course_name = malloc(strlen(course_name) + 1);
                 if (c->course_name == NULL) {
                     free(c);
-                    exit(1);
+                    return NULL;
                 }
                 strcpy(c->course_name, course_name);
 
@@ -264,11 +257,13 @@ CLASS_DATA* API_load_students(char* filePath) {
 
                 Course** tmp = realloc(s->courses, sizeof(Course*) * (s->num_courses + 1));
                 if (tmp == NULL) {
+                    // destroyCourse(c);
                     return NULL;
                 }
 
                 s->courses = tmp;
-                s->courses[s->num_courses++] = c;
+                s->courses[s->num_courses] = c;
+                s->num_courses++;
             }
 
             // Ajout de la note
@@ -278,7 +273,8 @@ CLASS_DATA* API_load_students(char* filePath) {
             }
 
             c->grades->grades_array = tmp2;
-            c->grades->grades_array[c->grades->size++] = grade;
+            c->grades->grades_array[c->grades->size] = grade;
+            c->grades->size++;
 
             // Calcul des moyennes
             float sum = 0;
@@ -304,7 +300,7 @@ CLASS_DATA* API_load_students(char* filePath) {
 
 /**
  * @brief Sauvegarde la promotion dans un fichier binaire.
- * @return 0 si succès, -1 sinon.
+ * @return 1 si succès, 0 sinon.
  */
 int API_save_from_binary_file(CLASS_DATA* pClass, char* filePath) {
     if (filePath == NULL || pClass == NULL) {
@@ -629,4 +625,37 @@ CLASS_DATA* API_restore_from_binary_file(char* filePath){ // This function read 
     fclose(data);
 
     return promo;
+}
+
+/**
+ * @brief Affiche toutes les données en mémoire d'une promotion.
+ * 
+ * @param pClass pointeur vers la structure CLASS_DATA contenant tous les étudiants
+ */
+void API_display(CLASS_DATA *pClass) {
+    if (pClass == NULL) {
+        fprintf(stderr, "Erreur : classe inexistante.\n");
+        return;
+    }
+
+    printf("===========================================\n");
+    printf("   LIBRARY VERSION 1.0 - Author: Mohamed B.\n");
+    printf("===========================================\n\n");
+
+    printf("Liste des matières disponibles :\n");
+    printf("-------------------------------------------\n");
+
+    
+    printf("===========================================\n");
+    printf("         Fin de l’affichage mémoire\n");
+    printf("===========================================\n");
+}
+
+
+int main(int argc, char* argv[]){
+
+
+    CLASS_DATA* p = API_load_students(argv[1]);
+    //API_display(p);
+    return 0;
 }
