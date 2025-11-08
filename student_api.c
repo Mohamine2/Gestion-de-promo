@@ -639,11 +639,32 @@ void API_display(CLASS_DATA *pClass) {
     }
 
     printf("===========================================\n");
-    printf("   LIBRARY VERSION 1.0 - Author: Mohamed B.\n");
+    printf("   LIBRARY VERSION 1.0 - Author: BOUAZZAOUI\n");
     printf("===========================================\n\n");
 
-    printf("Liste des matières disponibles :\n");
     printf("-------------------------------------------\n");
+
+    printf("%d matières:\n", pClass->students[0]->num_courses);
+    for(int i = 0; i < pClass->students[0]->num_courses; i++){
+        printf("- %s   Coeff: %.2f\n", pClass->students[0]->courses[i]->course_name, pClass->students[0]->courses[i]->coeff);
+    }
+
+    printf("-------------------------------------------\n");
+    printf("Liste des étudiants :\n");
+    printf("%d étudiants:\n", pClass->num_students);
+    for(int j = 0; j < pClass->num_students; j++){
+        Student* s = pClass->students[j];
+        printf("\n%d - %s %s, %d ans\n", s->student_id, s->first_name, s->last_name, s->age);
+        printf("Moyenne générale : %.2f\n", s->general_average);
+        for (int k = 0; k < s->num_courses; k++) {
+            Course* c = s->courses[k];
+            printf("  %s (coeff %.2f) - Moy: %.2f - Notes: ", c->course_name, c->coeff, c->average);
+            for (int n = 0; n < c->grades->size; n++) {
+                printf("%.1f ", c->grades->grades_array[n]);
+            }
+            printf("\n");
+        }
+    }
 
     
     printf("===========================================\n");
@@ -651,11 +672,29 @@ void API_display(CLASS_DATA *pClass) {
     printf("===========================================\n");
 }
 
+void printPromotion(CLASS_DATA* p) {
+    printf("=== PROMOTION ===\n");
+    for (int i = 0; i < p->num_students; i++) {
+        Student* s = p->students[i];
+        printf("\n%d - %s %s, %d ans\n", s->student_id, s->first_name, s->last_name, s->age);
+        printf("Moyenne générale : %.2f\n", s->general_average);
+        for (int j = 0; j < s->num_courses; j++) {
+            Course* c = s->courses[j];
+            printf("  %s (coeff %.2f) - Moy: %.2f - Notes: ", c->course_name, c->coeff, c->average);
+            for (int k = 0; k < c->grades->size; k++) {
+                printf("%.1f ", c->grades->grades_array[k]);
+            }
+            printf("\n");
+        }
+    }
+}
+
 
 int main(int argc, char* argv[]){
 
 
     CLASS_DATA* p = API_load_students(argv[1]);
-    //API_display(p);
+    API_display(p);
+    //printPromotion(p);
     return 0;
 }
