@@ -666,35 +666,64 @@ void API_display(CLASS_DATA *pClass) {
         }
     }
 
-    
     printf("===========================================\n");
-    printf("         Fin de l’affichage mémoire\n");
+    printf("         Fin de l’affichage\n");
     printf("===========================================\n");
 }
 
-void printPromotion(CLASS_DATA* p) {
-    printf("=== PROMOTION ===\n");
-    for (int i = 0; i < p->num_students; i++) {
-        Student* s = p->students[i];
-        printf("\n%d - %s %s, %d ans\n", s->student_id, s->first_name, s->last_name, s->age);
-        printf("Moyenne générale : %.2f\n", s->general_average);
+
+void API_unload(CLASS_DATA* pClass) {
+    if (pClass == NULL){
+        fprintf(stderr, "Erreur d'allocation mémoire\n");
+        return;
+    }
+    for(int i = 0; i < pClass->num_students; i++){
+        Student* s = pClass->students[i];
+        if (s == NULL){
+            continue;
+        }
         for (int j = 0; j < s->num_courses; j++) {
             Course* c = s->courses[j];
-            printf("  %s (coeff %.2f) - Moy: %.2f - Notes: ", c->course_name, c->coeff, c->average);
-            for (int k = 0; k < c->grades->size; k++) {
-                printf("%.1f ", c->grades->grades_array[k]);
+            if (c == NULL){
+                continue;
             }
-            printf("\n");
+
+            // Libération des notes
+            if(c->grades){
+                free(c->grades->grades_array);
+                free(c->grades);
+            }
+
+            // Libération du nom du cours
+            free(c->course_name);
+
+            // Libération du cours
+            free(c);
         }
+         // Libération du tableau des cours
+        free(s->courses);
+
+        // Libération des noms/prénoms
+        free(s->first_name);
+        free(s->last_name);
+
+        // Libération de l’étudiant
+        free(s);
     }
+     // Libération du tableau des étudiants
+    free(pClass->students);
+
+    // Libération de la structure principale
+    free(pClass);
 }
 
 
 int main(int argc, char* argv[]){
 
 
-    CLASS_DATA* p = API_load_students(argv[1]);
+    // CLASS_DATA* p = API_load_students(argv[1]);
+    // API_save_from_binary_file(p, "save.bin");
+    CLASS_DATA* p = API_restore_from_binary_file("save.bin");
     API_display(p);
-    //printPromotion(p);
     return 0;
 }
